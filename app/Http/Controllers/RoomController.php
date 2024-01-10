@@ -15,11 +15,30 @@ class RoomController extends Controller
      * @return \Illuminate\Http\Response
      */
     public static $wrap = 'Rooms';
-    public function index()
+    public function index(Request $request)
     {
-        $rooms = Room::all();
-        return new RoomCollection($rooms);       
+        $query = Room::query();
+    
+        // Filtriranje po kapacitetu sobe
+        if ($request->has('capacity')) {
+            $capacity = $request->input('capacity');
+            $query->where('capacity', '>=', $capacity);
+        }
+    
+        // Filtriranje po sadržajima (amenities)
+        if ($request->has('amenity')) {
+            $amenity = $request->input('amenity');
+            $query->where('amenities', 'like', '%' . $amenity . '%');
+        }
+    
+        // Paginacija
+        $perPage = $request->input('per_page', 3);
+        $rooms = $query->paginate($perPage);
+
+        //return response()->json($rooms);
+        return new RoomCollection($rooms);
     }
+
 
     /**
      * Store a newly created resource in storage.

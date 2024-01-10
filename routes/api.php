@@ -45,3 +45,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 });
 
 Route::resource('reservations', ReservationController::class)->only(['index']);
+
+Route::get('/rooms', [RoomController::class, 'index']);
+
