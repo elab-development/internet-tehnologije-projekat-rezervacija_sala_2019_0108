@@ -6,6 +6,8 @@ use App\Http\Resources\ReservationCollection;
 use App\Http\Resources\ReservationResource;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class ReservationController extends Controller
 {
@@ -26,18 +28,27 @@ class ReservationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'room_id' => 'required|exists:rooms,id',
-            'reserved_date' => 'required|date',
-            'status' => 'required|in:pending,confirmed,cancelled'
-        ]);
+        public function store(Request $request)
+        {
+            $validator = Validator::make($request->all(), [
+                'room_id' => 'required|exists:rooms,id',
+                'reserved_date' => 'required|date',
+                'status' => 'required|in:pending,confirmed,cancelled'
+            ]);
 
-        $reservation = Reservation::create($validated);
-        return response()->json($reservation, 201);
-    }
+            if ($validator->fails()) {
+                return response()->json($validator->errors());
+            }
+
+            $reservation = Reservation::create([
+                'user_id' => Auth::user()->id,
+                'room_id' => $request->room_id,
+                'reserved_date' => $request->reserved_date,
+                'status' => $request->status
+            ]);
+
+            return response()->json(['Reservation is created successfully.', new ReservationResource($reservation)]);
+        }
 
     /**
      * Display the specified resource.
@@ -58,19 +69,25 @@ class ReservationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $reservation)
     {
-        $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
+        $validator = Validator::make($request->all(), [
             'room_id' => 'required|exists:rooms,id',
             'reserved_date' => 'required|date',
             'status' => 'required|in:pending,confirmed,cancelled'
         ]);
 
-        $reservation = Reservation::findOrFail($id);
-        $reservation->update($validated);
+        if ($validator->fails()) {
+            return response()->json($validator->errors());
+        }
 
-        return response()->json($reservation);
+        $reservation->room_id = $request->room_id;
+        $reservation->reserved_date = $request->reserved_date;
+        $reservation->status = $request->status;
+
+        $reservation->save();
+
+        return response()->json(['Post is updated successfully.', new ReservationResource($reservation)]);
     }
 
     /**
@@ -86,11 +103,11 @@ class ReservationController extends Controller
 
         return response()->json(['message' => 'Reservation deleted successfully']);
     }
-    
+
     public function cancelReservation($id)
     {
         $reservation = Reservation::findOrFail($id);
-        
+
         if ($reservation->status == 'cancelled') {
             return response()->json(['message' => 'Reservation is already cancelled'], 400);
         }

@@ -14,9 +14,9 @@ class Reservation extends Model
     const STATUS_CANCELLED = 'cancelled';
 
     protected $fillable = [
-        'user', 
-        'room', 
-        'date',
+        'user_id', 
+        'room_id', 
+        'reserved_date',
         'status'
     ];
 
