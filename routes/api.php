@@ -47,4 +47,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 Route::resource('reservations', ReservationController::class)->only(['index']);
 
 Route::get('/rooms', [RoomController::class, 'index']);
+//Eksport u pdf
+Route::get('/reservation/{reservation}/pdf', [ReservationController::class, 'exportToPdf']);
+
 

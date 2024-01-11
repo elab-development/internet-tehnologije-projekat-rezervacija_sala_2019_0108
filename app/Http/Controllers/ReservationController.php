@@ -8,6 +8,8 @@ use App\Models\Reservation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use PDF;
+
 
 class ReservationController extends Controller
 {
@@ -28,27 +30,27 @@ class ReservationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-        public function store(Request $request)
-        {
-            $validator = Validator::make($request->all(), [
-                'room_id' => 'required|exists:rooms,id',
-                'reserved_date' => 'required|date',
-                'status' => 'required|in:pending,confirmed,cancelled'
-            ]);
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'room_id' => 'required|exists:rooms,id',
+            'reserved_date' => 'required|date',
+            'status' => 'required|in:pending,confirmed,cancelled'
+        ]);
 
-            if ($validator->fails()) {
-                return response()->json($validator->errors());
-            }
-
-            $reservation = Reservation::create([
-                'user_id' => Auth::user()->id,
-                'room_id' => $request->room_id,
-                'reserved_date' => $request->reserved_date,
-                'status' => $request->status
-            ]);
-
-            return response()->json(['Reservation is created successfully.', new ReservationResource($reservation)]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors());
         }
+
+        $reservation = Reservation::create([
+            'user_id' => Auth::user()->id,
+            'room_id' => $request->room_id,
+            'reserved_date' => $request->reserved_date,
+            'status' => $request->status
+        ]);
+
+        return response()->json(['Reservation is created successfully.', new ReservationResource($reservation)]);
+    }
 
     /**
      * Display the specified resource.
@@ -116,5 +118,30 @@ class ReservationController extends Controller
         $reservation->save();
 
         return response()->json(['message' => 'Reservation cancelled successfully']);
+    }
+
+    public function exportToPdf($reservationId)
+    {
+        $reservation = Reservation::findOrFail($reservationId);
+
+        // Kreiranje HTML sadržaja direktno
+        $html = "
+        <html>
+            <head>
+                <title>Rezervacija</title>
+            </head>
+            <body>
+                <h1>Detalji Rezervacije</h1>
+                <p>ID Rezervacije: {$reservation->id}</p>
+                <p>Korisnik: {$reservation->user_id}</p>
+                <p>Soba: {$reservation->room_id}</p>
+                <p>Datum Rezervacije: {$reservation->reserved_date}</p>
+                <p>Status: {$reservation->status}</p>
+            </body>
+        </html>
+        ";
+
+        $pdf = PDF::loadHTML($html);
+        return $pdf->download('reservation-' . $reservationId . '.pdf');
     }
 }
