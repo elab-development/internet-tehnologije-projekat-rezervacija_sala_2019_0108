@@ -1,7 +1,67 @@
 <app-header></app-header>
-<div class="container">
+<div class="container-fluid">
     <div class="row">
-        <div class="col-md-12">
+        <!-- Sidebar -->
+        <div class="col-md-2" style="background-color: #817F7F;">
+            <!-- Sadržaj sidebar-a -->
+            <div class="sidebar">
+                <!-- Linkovi ili bilo koji sadržaj koji želite u sidebar-u -->
+                <!-- Start of Type Select -->
+                <div class="type-selector">
+                    <label for="roomType" class="custom-select-label">Type:</label>
+                    <select id="roomType" class="custom-select">
+                        <option value="conference">Conference Room</option>
+                        <option value="classroom">Classroom</option>
+                        <option value="meeting">Meeting Room</option>
+                        <option value="auditorium">Auditorium</option>
+                    </select>
+                </div>
+                <div class="capacity-selector">
+                    <label for="capacity" class="custom-select-label">Capacity:</label>
+                    <select id="capacity" class="custom-select">
+                        <option value="none">-</option>
+                        <option value="10-20">10-20</option>
+                        <option value="20-30">20-30</option>
+                        <option value="30-50">30-50</option>
+                        <option value="50-100">50-100</option>
+                        <option value="100+">100+</option>
+                    </select>
+                </div>
+                <!-- End of Capacity Select -->
+                <div class="equipment-selector mt-3">
+                    <p class="mb-1">Equipment:</p>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="projector" id="equipmentProjector">
+                        <label class="form-check-label" for="equipmentProjector">
+                            Projector
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="whiteboard" id="equipmentWhiteboard">
+                        <label class="form-check-label" for="equipmentWhiteboard">
+                            Whiteboard
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="videoConference"
+                            id="equipmentVideoConference">
+                        <label class="form-check-label" for="equipmentVideoConference">
+                            Video Conference
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="soundSystem" id="equipmentSoundSystem">
+                        <label class="form-check-label" for="equipmentSoundSystem">
+                            Sound System
+                        </label>
+                    </div>
+                </div>
+                <!-- End of Equipment Select -->
+                
+            </div>
+        </div>
+        <!-- Glavni sadržaj -->
+        <div class="col-md-10">
             <app-rooms></app-rooms>
         </div>
     </div>
