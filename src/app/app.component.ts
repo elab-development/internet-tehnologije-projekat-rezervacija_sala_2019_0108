@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +6,16 @@ import { Component } from '@angular/core';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
+
   title = 'RoomReserve';
+  @ViewChild('roomTypeSelect') roomTypeSelect!: ElementRef;
+  @ViewChild('roomCapacitySelect') roomCapacitySelect!: ElementRef;
+
+  clearAll() {
+
+    this.roomCapacitySelect.nativeElement.value = 'none';
+    this.roomTypeSelect.nativeElement.value = 'none';
+
+  }
+
 }

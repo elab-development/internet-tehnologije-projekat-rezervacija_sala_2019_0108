@@ -50,4 +50,45 @@
     margin-bottom: 0.5rem; /* Dodaje malo prostora između labele i select boxa */
 }
 
+.detail-section ul li {
+    margin-bottom: 10px; /* Dodaje malo prostora između stavki liste */
+    padding: 8px; /* Dodaje prostor unutar svake stavke liste */
+    background-color: #f2f2f2; /* Svetlo siva boja pozadine za svaku stavku */
+    border-radius: 5px; /* Zaobljeni uglovi za lepši izgled */
+    list-style-type: none; /* Uklanja tradicionalne oznake za listu */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Dodaje blagu senku za dubinski efekat */
+    font-size: 16px; /* Povećava veličinu fonta za bolju čitljivost */
+}
+
+.detail-section ul {
+    padding-left: 0; /* Uklanja podrazumevani padding sa leve strane liste */
+}
+
+.equipment-selector .flex-container {
+    display: flex;       /* Aktivira flexbox layout */
+    flex-wrap: wrap;     /* Omogućava elementima da pređu u novi red ako nema dovoljno prostora */
+    padding: 0;          /* Uklanja podrazumevani padding */
+    list-style: none;    /* Uklanja podrazumevane stilove liste */
+}
+
+.equipment-selector .flex-container li {
+    margin-right: 10px;  /* Dodaje malo prostora između elemenata */
+    /* Dodatne stilizacije po potrebi */
+}
+
+  
+  .detail-section ul {
+    padding: 0;
+    list-style: none; /* Uklanja tačke iz liste */
+  }
+  
+  .detail-section li {
+    background-color: #f2f2f2; /* Primer pozadinske boje */
+    padding: 5px;
+    border-radius: 5px; /* Zaobljeni uglovi */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Senka za dubinu */
+  }
+
+  
+
 

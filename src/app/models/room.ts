@@ -1,15 +1,15 @@
 export class Room {
 
-    constructor(private id: number,
-                private name: string,
-                private type: string,
-                private capacity: number,
-                private location: string,
-                private equipment: string[],
-                private availability: string,
-                private price: number,
-                private description: string,
-                private imageUrl: string){
+    constructor(public id: number,
+        public name: string,
+        public type: string,
+        public capacity: number,
+        public location: string,
+        public equipment: string[],
+        public squareFootage: number,
+        public price: number,
+        public description: string,
+        public imageUrl: string){
     }
     
 }

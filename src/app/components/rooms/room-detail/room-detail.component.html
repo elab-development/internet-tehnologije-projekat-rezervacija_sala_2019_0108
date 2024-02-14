@@ -1,1 +1,40 @@
-<p>room-detail works!</p>
+<div class="detail-section">
+    <div class="container-fluid" style="display: flex;">
+        <div style="width: 500px;">
+            <img src="{{ room.imageUrl }}" class="detail-img" style="width: 500px; margin-bottom: 20px;">
+
+            <h4>{{ room.name }} - {{room.type}}</h4>
+            <h5>Location: {{room.location}}</h5>
+            <h5>Square Footage: {{room.squareFootage}} | Capacity: {{room.capacity}}</h5>
+            <h5>Daily Price: {{room.price | currency: 'USD'}}</h5>
+            <br>
+            <h5>Description</h5>
+            <p style="text-align: justify;">{{ room.description }}</p>
+
+        </div>
+       
+        <div  style="margin-left: 10px; display: block;">
+            <app-calendar ></app-calendar>
+            <div style="    display: flex; justify-content: center; align-items: center;">
+                <button class="reservation-button">Reserve</button>
+            </div>
+            
+
+        </div>
+        
+        
+    </div>
+    <div style="margin-left: 10px;">
+        <h4>Equipment</h4>
+        <div class="equipment-selector">
+            <ul class="flex-container">
+                <li *ngFor="let tempEq of room.equipment">
+                    {{tempEq}}
+                </li>
+            </ul>
+        </div>
+        
+    </div>
+    <br><br><br>
+    <a routerLink="/products" class="mt-5">Back to Room List</a>
+</div>

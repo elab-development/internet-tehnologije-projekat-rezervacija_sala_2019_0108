@@ -7,17 +7,18 @@
 
                     <div class="room-box">
                         <div style="display: flex;">
-                            <a href="#">
-                                <img src="{{ tempRoomItem.imageUrl }}" class="img-fluid">
+                            <a routerLink="/rooms/{{tempRoomItem.id}}">
+                                <img style="margin-right: 5px;" src="{{ tempRoomItem.imageUrl }}" class="img-fluid">
                             </a>
                             <div style="display: block;">
                                 <p>Capacity: {{tempRoomItem.capacity}}</p>
                                 <p>Location: {{tempRoomItem.location}}<p>
-                                <p>Equipment: {{tempRoomItem.equipment}}<p>
+                                <p>Type: {{tempRoomItem.type}}<p>
+                                <p>Price: {{tempRoomItem.price | currency:'USD'}}<p>
                             </div>
 
                         </div>
-                        <a href="#">
+                        <a routerLink="/rooms/{{tempRoomItem.id}}">
                             <h1>{{ tempRoomItem.name }}</h1>
                         </a>
 

@@ -1,0 +1,35 @@
+<!-- calendar.component.html -->
+<h4 style="display: flex; justify-content: center; align-items: center; ">Free Dates</h4>
+
+<div class="rounded-container">
+    <div class="month">
+        <ul>
+            <li class="prev" (click)="changeMonth(-1)" style="height:90%;">&#10094;</li>
+            <li class="next" (click)="changeMonth(1)">&#10095;</li>
+            <li>{{ monthAndYear }}</li>
+        </ul>
+    </div>
+    <div style="background: #ddd;">
+        <ul class="weekdays" style="margin-left: 15px;">
+            <li>Mo</li>
+            <li>Tu</li>
+            <li>We</li>
+            <li>Th</li>
+            <li>Fr</li>
+            <li>Sa</li>
+            <li>Su</li>
+        </ul>
+    </div>
+
+    <div style="background: #eee;">
+        <ul class="days" style="margin-left: 15px;">
+            <li *ngFor="let emptyDay of [].constructor(firstDayOfMonth); let i = index">&nbsp;</li>
+            <li *ngFor="let day of daysInMonth"
+                [ngClass]="{'reserved': reservedDates.includes(currentYear + '-' + ('0' + (currentMonth + 1)).slice(-2) + '-' + ('0' + day).slice(-2)), 'selected': selectedDate === currentYear + '-' + ('0' + (currentMonth + 1)).slice(-2) + '-' + ('0' + day).slice(-2)}"
+                (click)="selectDate(day)">
+                {{ day }}
+            </li>
+
+        </ul>
+    </div>
+</div>
