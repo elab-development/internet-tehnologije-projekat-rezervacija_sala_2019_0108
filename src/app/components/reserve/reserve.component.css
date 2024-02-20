@@ -1,0 +1,34 @@
+.form-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    gap: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .mat-form-field {
+    width: 100%; /* Omogućava da mat-form-field zauzme punu širinu kontejnera */
+  }
+  
+  .confirm-button, .cancel-button {
+    width: 100px; /* Da dugmad budu jednake širine */
+  }
+  
+  .confirm-button {
+    color: #fff;
+    background-color: #4CAF50;
+  }
+  
+  .cancel-button {
+    color: #fff;
+    background-color: #f44336;
+  }
+  
+  button.mat-button:hover {
+    opacity: 0.85;
+  }
+  

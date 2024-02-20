@@ -1,3 +1,7 @@
+@import "./app/components/rooms/room-detail/calendar/room-detail-calendar.css";
+@import "./app/components/rooms/room-detail/calendar/side-menu-calendar.css";
+
+
 .room-box img {
     width: 250px;
 }
@@ -88,7 +92,32 @@
     border-radius: 5px; /* Zaobljeni uglovi */
     box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Senka za dubinu */
   }
+  
+  .reservation-button {
+    padding: 10px 100px;
+    background-color: #666; /* Zelena boja za pozitivnu akciju */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Animacija za hover efekat */
+    outline: none; /* Uklanja plavi outline koji se pojavljuje nakon klika */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Blaga senka za dubinu */
+    margin-top: 10px;
+
+  }
+  
+  .reservation-button:hover {
+    background-color: #777474; /* Malo tamnija zelena za hover efekat */
+  }
+  .reservation-button:active {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Menja senku kada je dugme pritisnuto */
+    transform: translateY(2px); /* Blagi pomak ka dole kada je dugme pritisnuto */
+  }
 
   
-
-
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

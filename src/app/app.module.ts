@@ -10,10 +10,17 @@ import { RoomItemComponent } from './components/rooms/room-list/room-item/room-i
 import { RouterModule, Routes } from '@angular/router';
 import { CalendarComponent } from './components/rooms/room-detail/calendar/calendar.component';
 import { SideMenuComponent } from './components/side-menu/side-menu.component';
+import { ReserveComponent } from './components/reserve/reserve.component';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatDialogModule } from '@angular/material/dialog';
+import { environment } from '../environments/environment.development';
 
 const routes: Routes = [
   
   { path: 'rooms/:id', component: RoomDetailComponent },
+  { path: 'reserve', component: ReserveComponent },
   { path: 'rooms', component: RoomListComponent },
   { path: '', redirectTo: '/rooms', pathMatch: 'full' },
   { path: '**', redirectTo: '/rooms', pathMatch: 'full' }
@@ -29,12 +36,18 @@ const routes: Routes = [
     RoomItemComponent,
     CalendarComponent,
     SideMenuComponent,
+    ReserveComponent,
   ],
   imports: [
     RouterModule.forRoot(routes),
-    BrowserModule
+    BrowserModule,
+    MatFormFieldModule, 
+    MatInputModule, 
+    MatDialogModule,
   ],
-  providers: [],
+  providers: [
+    provideAnimationsAsync('noop')
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

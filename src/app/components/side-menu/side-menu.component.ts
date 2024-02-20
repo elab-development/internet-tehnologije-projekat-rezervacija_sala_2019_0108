@@ -1,4 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { CalendarComponent } from '../rooms/room-detail/calendar/calendar.component';
 
 @Component({
   selector: 'app-side-menu',
@@ -8,6 +9,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 export class SideMenuComponent {
   @ViewChild('roomTypeSelect') roomTypeSelect!: ElementRef;
   @ViewChild('roomCapacitySelect') roomCapacitySelect!: ElementRef;
+  @ViewChild(CalendarComponent) CalendarComponent: CalendarComponent;
 
   @ViewChild('equipmentProjector') equipmentProjector!: ElementRef;
   @ViewChild('equipmentWhiteboard') equipmentWhiteboard!: ElementRef;
@@ -22,5 +24,10 @@ export class SideMenuComponent {
     this.equipmentWhiteboard.nativeElement.checked = false;
     this.equipmentVideoConference.nativeElement.checked = false;
     this.equipmentSoundSystem.nativeElement.checked = false;
+    this.CalendarComponent.resetCalendar();
+
   }
+
+  
+
 }

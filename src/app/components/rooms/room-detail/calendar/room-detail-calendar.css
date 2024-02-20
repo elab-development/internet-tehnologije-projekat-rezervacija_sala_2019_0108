@@ -1,0 +1,77 @@
+.room-detail-calendar * { box-sizing: border-box; }
+.room-detail-calendar ul { list-style-type: none; }
+.room-detail-calendar body { font-family: Verdana, sans-serif; }
+
+.room-detail-calendar .month {
+  padding: 70px 25px;
+  width: 100%;
+  background: #817F7F;
+  text-align: center;
+}
+
+.room-detail-calendar .month ul {
+  margin: 0;
+  padding: 0;
+}
+
+.room-detail-calendar .month ul li {
+  color: #666;
+  font-size: 20px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+
+.room-detail-calendar .month .prev {
+  float: left;
+  padding-top: 10px;
+}
+
+.room-detail-calendar .month .next {
+  float: right;
+  padding-top: 10px;
+}
+
+.room-detail-calendar .weekdays {
+  margin: 0;
+  padding: 10px 0;
+  background-color: #ddd;
+}
+
+.room-detail-calendar .weekdays li {
+  display: inline-block;
+  width: 13.6%;
+  color: #666;
+  text-align: center;
+}
+
+.room-detail-calendar .days {
+  padding: 10px 0;
+  background: #eee;
+  margin: 0;
+}
+
+.room-detail-calendar .days li {
+  list-style-type: none;
+  display: inline-block;
+  width: 13.6%;
+  text-align: center;
+  margin-bottom: 5px;
+  font-size: 12px;
+  color: #777;
+}
+
+.room-detail-calendar .reserved {
+  padding: 5px;
+  background: #bc1a25;
+  color: white !important;
+}
+
+.room-detail-calendar .rounded-container {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.room-detail-calendar .selected {
+  background-color: #4CAF50; /* Zelena boja za pozitivnu akciju */
+  color: white !important;
+}

@@ -1,0 +1,77 @@
+.side-menu-calendar * { box-sizing: border-box; }
+.side-menu-calendar ul { list-style-type: none; }
+.side-menu-calendar body { font-family: Verdana, sans-serif; }
+
+.side-menu-calendar .month {
+  padding: 15px 25px;
+  width: 100%;
+  background: #817F7F;
+  text-align: center;
+}
+
+.side-menu-calendar .month ul {
+  margin: 0;
+  padding: 0;
+}
+
+.side-menu-calendar .month ul li {
+  color: #666;
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+
+.side-menu-calendar .month .prev {
+  float: left;
+  padding-top: 0px;
+}
+
+.side-menu-calendar .month .next {
+  float: right;
+  padding-top: 0px;
+}
+
+.side-menu-calendar .weekdays {
+  margin: 0;
+  padding: 10px 0;
+  background-color: #ddd;
+}
+
+.side-menu-calendar .weekdays li {
+  display: inline-block;
+  width: 13.6%;
+  color: #666; /* Promenjena boja u skladu sa vašim zahtevom */
+  text-align: center;
+}
+
+.side-menu-calendar .days {
+  padding: 10px 0;
+  background: #eee;
+  margin: 0;
+}
+
+.side-menu-calendar .days li {
+  list-style-type: none;
+  display: inline-block;
+  width: 13.6%;
+  text-align: center;
+  margin-bottom: 5px;
+  font-size:12px;
+  color: #777;
+}
+/*
+.side-menu-calendar .reserved {
+  padding: 5px;
+  background: #bc1a25;
+  color: white !important;
+}*/
+
+.side-menu-calendar .rounded-container {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.side-menu-calendar .selected {
+  background-color: #4CAF50; /* Zelena boja za pozitivnu akciju */
+  color: white !important;
+}

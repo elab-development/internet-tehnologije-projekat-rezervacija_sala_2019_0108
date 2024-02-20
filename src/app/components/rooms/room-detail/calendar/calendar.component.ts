@@ -1,5 +1,6 @@
 // calendar.component.ts
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+
 
 @Component({
   selector: 'app-calendar',
@@ -7,11 +8,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./calendar.component.css']
 })
 export class CalendarComponent implements OnInit {
+
+  @Input() styleMode: 'room-detail' | 'side-menu';
+
+  @Input() hasReserved: boolean = true;
+
+  @Input() selectedDate: string = '';
+
   currentMonth: number;
   currentYear: number;
   daysInMonth: number[];
   firstDayOfMonth: number;
-  selectedDate: string = '';
+  
 
 
   reservedDates: string[] = ['2024-02-10', '2024-02-15'];
@@ -54,11 +62,22 @@ export class CalendarComponent implements OnInit {
   }
 
   selectDate(day: number) {
-    const dateStr = this.currentYear + '-' + ('0' + (this.currentMonth + 1)).slice(-2) + '-' + ('0' + day).slice(-2);
-    if (this.reservedDates.includes(dateStr)) {
-        alert('This date is already reserved.');
-    } else {
-        this.selectedDate = dateStr;
+    const dateStr = `${this.currentYear}-${('0' + (this.currentMonth + 1)).slice(-2)}-${('0' + day).slice(-2)}`;
+    
+    // Proverite da li je datum već selektovan ili rezervisan pre nego što postavite kao selektovan.
+    if (this.selectedDate === dateStr) {
+      // Ako je datum već selektovan, možda ćete hteti da ništa ne radite ili da obavestite korisnika.
+      this.selectedDate = '';
+      return;
     }
-}
+  
+    if (this.reservedDates.includes(dateStr) && this.hasReserved) {
+      alert('This date is already reserved.');
+    } else {
+      this.selectedDate = dateStr;
+    }
+  }
+  resetCalendar(){
+    this.selectedDate = '';
+  }
 }
