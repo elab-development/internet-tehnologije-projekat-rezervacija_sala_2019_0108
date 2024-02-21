@@ -1,21 +1,20 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
 
   title = 'RoomReserve';
-  @ViewChild('roomTypeSelect') roomTypeSelect!: ElementRef;
-  @ViewChild('roomCapacitySelect') roomCapacitySelect!: ElementRef;
 
-  clearAll() {
+  constructor(private authService: AuthService){}
 
-    this.roomCapacitySelect.nativeElement.value = 'none';
-    this.roomTypeSelect.nativeElement.value = 'none';
-
+  ngOnInit(): void {
+    this.authService.autoLogin();
   }
+
 
 }

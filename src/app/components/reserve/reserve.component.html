@@ -3,26 +3,21 @@
     <form>
         <mat-form-field appearance="fill">
             <mat-label>Room Name: </mat-label>
-            <input matInput [value]="data.room.name" readonly>
+            <input matInput [value]="data.reservation.room.name" readonly>
         </mat-form-field>
         <mat-form-field appearance="fill">
             <mat-label>Room Location: </mat-label>
-            <input matInput [value]="data.room.location" readonly>
+            <input matInput [value]="data.reservation.room.location" readonly>
         </mat-form-field>
         <mat-form-field appearance="fill">
             <mat-label>Date: </mat-label>
-            <input matInput [value]="data.date" readonly>
+            <input matInput [value]="data.reservation.date | date: 'shortDate'" readonly>
         </mat-form-field>
         <mat-form-field appearance="fill">
-            <mat-label>Room Name: </mat-label>
-            <input matInput [value]="data.room.name" readonly>
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-            <mat-label>Room Name: </mat-label>
-            <input matInput [value]="data.room.name" readonly>
+            <mat-label>Email: </mat-label>
+            <input matInput [value]="data.reservation.user.email" readonly>
         </mat-form-field>
 
-        <!-- Ponovite za ostale podatke koje želite da prikažete -->
         <br>
         <button mat-button class="confirm-button">Confirm</button>
         <button mat-button class="cancel-button" (click)="onCancelClick()">Cancel</button>

@@ -1,14 +1,16 @@
 .form-container {
-    display: flex;
-    flex-direction: column;
-    max-width: 600px;
-    margin: auto;
-    padding: 20px;
-    gap: 20px;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centrira sadržaj po horizontalnoj osi */
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+  gap: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
   
   .mat-form-field {
     width: 100%; /* Omogućava da mat-form-field zauzme punu širinu kontejnera */
@@ -18,17 +20,18 @@
     width: 100px; /* Da dugmad budu jednake širine */
   }
   
-  .confirm-button {
-    color: #fff;
-    background-color: #4CAF50;
+  .confirm-button, .cancel-button {
+    margin-right: 10px; /* Dodaje desni razmak za Confirm dugme */
+    width: 100px; /* Održava širinu dugmadi */
+    color: #fff; /* Bela boja teksta */
   }
   
   .cancel-button {
-    color: #fff;
-    background-color: #f44336;
+    margin-right: 0; /* Uklanja desni razmak za Cancel dugme */
+    background-color: #f44336; /* Crvena boja pozadine */
   }
   
-  button.mat-button:hover {
-    opacity: 0.85;
+  .confirm-button {
+    background-color: #4CAF50; /* Zelena boja pozadine */
   }
   

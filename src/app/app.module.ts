@@ -16,11 +16,16 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
 import { environment } from '../environments/environment.development';
+import { AuthComponent } from './auth/auth/auth.component';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { LoadingSpinnerComponent } from './styles/loading-spinner/loading-spinner.component';
 
 const routes: Routes = [
   
   { path: 'rooms/:id', component: RoomDetailComponent },
   { path: 'reserve', component: ReserveComponent },
+  { path: 'login', component: AuthComponent },
   { path: 'rooms', component: RoomListComponent },
   { path: '', redirectTo: '/rooms', pathMatch: 'full' },
   { path: '**', redirectTo: '/rooms', pathMatch: 'full' }
@@ -37,13 +42,17 @@ const routes: Routes = [
     CalendarComponent,
     SideMenuComponent,
     ReserveComponent,
+    AuthComponent,
+    LoadingSpinnerComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
     BrowserModule,
+    FormsModule,
     MatFormFieldModule, 
     MatInputModule, 
     MatDialogModule,
+    HttpClientModule,
   ],
   providers: [
     provideAnimationsAsync('noop')
