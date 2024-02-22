@@ -84,6 +84,10 @@ export class AuthService {
     this.autoLogout(expiresIn * 1000);
   }
 
+  isUserAuthenticated(): boolean {
+    const currentUser = this.user.value;
+    return !!currentUser && !!currentUser.token;
+  }
 }
 
 export interface AuthResponseData {

@@ -3,17 +3,17 @@
     <!-- Start of Type Select -->
     <div class="type-selector">
         <label for="roomType" class="custom-select-label">Type:</label>
-        <select id="roomType" class="custom-select" #roomTypeSelect>
+        <select id="roomType" class="custom-select" #roomTypeSelect (change)="changeList()">
             <option value="none">-</option>
-            <option value="conference">Conference Room</option>
-            <option value="classroom">Classroom</option>
-            <option value="meeting">Meeting Room</option>
-            <option value="auditorium">Auditorium</option>
+            <option value="Conference Room">Conference Room</option>
+            <option value="Classroom">Classroom</option>
+            <option value="Meeting Room">Meeting Room</option>
+            <option value="Auditorium">Auditorium</option>
         </select>
     </div>
     <div class="capacity-selector">
         <label for="capacity" class="custom-select-label">Capacity:</label>
-        <select id="capacity" class="custom-select" #roomCapacitySelect>
+        <select id="capacity" class="custom-select" #roomCapacitySelect (change)="changeList()">
             <option value="none">-</option>
             <option value="10-20">10-20</option>
             <option value="20-30">20-30</option>
@@ -26,22 +26,22 @@
     <div class="equipment-selector mt-3">
         <p class="mb-1">Equipment:</p>
         <div class="form-check">
-            <input class="form-check-input equipment-checkbox" type="checkbox" value="projector" #equipmentProjector>
+            <input class="form-check-input equipment-checkbox" type="checkbox" value="projector" #equipmentProjector (click)="changeList()">
             <label class="form-check-label" for="equipmentProjector">Projector</label>
         </div>
         <div class="form-check">
-            <input class="form-check-input equipment-checkbox" type="checkbox" value="whiteboard" #equipmentWhiteboard>
+            <input class="form-check-input equipment-checkbox" type="checkbox" value="whiteboard" #equipmentWhiteboard (click)="changeList()">
             <label class="form-check-label" for="equipmentWhiteboard">Whiteboard</label>
         </div>
         
         <div class="form-check">
-            <input class="form-check-input equipment-checkbox" type="checkbox" value="videoConference "#equipmentVideoConference>
+            <input class="form-check-input equipment-checkbox" type="checkbox" value="videoConference "#equipmentVideoConference (click)="changeList()">
             <label class="form-check-label" for="equipmentVideoConference">
                 Video Conference
             </label>
         </div>
         <div class="form-check">
-            <input class="form-check-input equipment-checkbox" type="checkbox" value="soundSystem" #equipmentSoundSystem>
+            <input class="form-check-input equipment-checkbox" type="checkbox" value="soundSystem" #equipmentSoundSystem (click)="changeList()">
             <label class="form-check-label" for="equipmentSoundSystem">
                 Sound System
             </label>

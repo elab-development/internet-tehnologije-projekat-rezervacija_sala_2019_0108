@@ -1,0 +1,75 @@
+<div class="container mt-4">
+  <h2>Create New Room</h2>
+  <form #roomForm="ngForm" (ngSubmit)="onSubmit(roomForm)">
+    <div class="row">
+      <div class="col-md-6 form-group">
+        <label for="id">Room ID</label>
+        <input ngModel name="id" #id="ngModel" type="number" class="form-control" id="id" placeholder="Enter room ID" required>
+      </div>
+      <div class="col-md-6 form-group">
+        <label for="name">Name</label>
+        <input ngModel name="name" #name="ngModel" type="text" class="form-control" id="name" placeholder="Enter room name" required>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-md-6 form-group">
+        <label for="type">Type</label>
+        <input ngModel name="type" #type="ngModel" type="text" class="form-control" id="type" placeholder="Enter room type" required>
+      </div>
+      <div class="col-md-6 form-group">
+        <label for="capacity">Capacity</label>
+        <input ngModel name="capacity" #capacity="ngModel" type="number" class="form-control" id="capacity" placeholder="Enter room capacity" required>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-md-6 form-group">
+        <label for="location">Location</label>
+        <input ngModel name="location" #location="ngModel" type="text" class="form-control" id="location" placeholder="Enter room location" required>
+      </div>
+      <div class="col-md-6 form-group">
+        <label for="squareFootage">Square Footage</label>
+        <input ngModel name="squareFootage" #squareFootage="ngModel" type="number" class="form-control" id="squareFootage" placeholder="Enter room square footage" required>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-md-6 form-group">
+        <label for="price">Price</label>
+        <input ngModel name="price" #price="ngModel" type="number" class="form-control" id="price" placeholder="Enter room price" required>
+      </div>
+      <div class="col-md-6 form-group">
+        <label for="imageUrl">Image URL</label>
+        <input ngModel name="imageUrl" #imageUrl="ngModel" type="text" class="form-control" id="imageUrl" placeholder="Enter room image URL" required>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label style="margin-bottom: 10px;">Equipment</label>
+      <div class="form-check">
+        <input ngModel name="equipmentProjector" #equipmentProjector="ngModel" type="checkbox" class="form-check-input" id="equipmentProjector" value="Projector">
+        <label class="form-check-label" for="equipmentProjector">Projector</label>
+      </div>
+      <div class="form-check">
+        <input ngModel name="equipmentSoundEquipment" #equipmentSoundEquipment="ngModel" type="checkbox" class="form-check-input" id="equipmentSoundEquipment" value="Sound Equipment">
+        <label class="form-check-label" for="equipmentSoundEquipment">Sound Equipment</label>
+      </div>
+      <div class="form-check">
+        <input ngModel name="equipmentWhiteboard" #equipmentWhiteboard="ngModel" type="checkbox" class="form-check-input" id="equipmentWhiteboard" value="Whiteboard">
+        <label class="form-check-label" for="equipmentWhiteboard">Whiteboard</label>
+      </div>
+      <div class="form-check">
+        <input ngModel name="equipmentSoundSystem" #equipmentSoundSystem="ngModel" type="checkbox" class="form-check-input" id="equipmentSoundSystem" value="Sound System">
+        <label class="form-check-label" for="equipmentSoundSystem">Sound System</label>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea ngModel name="description" #description="ngModel" class="form-control" id="description" rows="3" placeholder="Enter room description" required></textarea>
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Create Room</button>
+  </form>
+</div>

@@ -6,6 +6,9 @@
                 <li class="nav-item">
                     <a class="nav-link" routerLink="/rooms">Looking For Rooms</a>
                 </li>
+                <li class="nav-item">
+                    <a *ngIf="isAuthenticated" class="nav-link" routerLink="/createRoom" >Create Room</a>
+                </li>
             </ul>
             <ul class="navbar-nav ms-auto"> <!-- Ovde koristimo ms-auto za Bootstrap 5 ili ml-auto za Bootstrap 4 -->
                 <li *ngIf="!isAuthenticated" class="nav-item">
