@@ -1,14 +1,15 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CalendarComponent } from '../rooms/room-detail/calendar/calendar.component';
 import { RoomService } from '../../services/room.service';
 import { Room } from '../../models/room';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-side-menu',
   templateUrl: './side-menu.component.html',
   styleUrl: './side-menu.component.css'
 })
-export class SideMenuComponent {
+export class SideMenuComponent implements OnInit, OnDestroy{
 
   @ViewChild('roomTypeSelect') roomTypeSelect!: ElementRef;
   @ViewChild('roomCapacitySelect') roomCapacitySelect!: ElementRef;
@@ -16,26 +17,44 @@ export class SideMenuComponent {
 
   @ViewChild('equipmentProjector') equipmentProjector!: ElementRef;
   @ViewChild('equipmentWhiteboard') equipmentWhiteboard!: ElementRef;
-  @ViewChild('equipmentVideoConference') equipmentVideoConference!: ElementRef;
+  @ViewChild('equipmentVideoSystem') equipmentVideoSystem!: ElementRef;
   @ViewChild('equipmentSoundSystem') equipmentSoundSystem!: ElementRef;
 
+  private roomsSubscription!: Subscription;
+  rooms: Room[] = [];
+
   constructor(private roomService: RoomService) { }
+
+  ngOnInit() {
+    this.roomsSubscription = this.roomService.getRooms().subscribe(rooms => {
+      this.rooms = rooms;
+    });
+  }
+
+  ngOnDestroy() {
+    this.roomsSubscription.unsubscribe();
+  }
 
   clearAll() {
     this.roomCapacitySelect.nativeElement.value = 'none';
     this.roomTypeSelect.nativeElement.value = 'none';
     this.equipmentProjector.nativeElement.checked = false;
     this.equipmentWhiteboard.nativeElement.checked = false;
-    this.equipmentVideoConference.nativeElement.checked = false;
+    this.equipmentVideoSystem.nativeElement.checked = false;
     this.equipmentSoundSystem.nativeElement.checked = false;
     this.CalendarComponent.resetCalendar();
     this.changeList();
   }
 
   changeList() {
+    this.roomService.loadRooms().subscribe(rooms => {
+      this.applyFilters(); 
+    });
+  }
+  
+
+  applyFilters(){
     let filteredRooms: Room[] = [];
-    this.roomService.setInitialRooms();
-    let rooms = this.roomService.loadRooms();
 
     const type = this.roomTypeSelect.nativeElement.value;
     console.log(type);
@@ -43,11 +62,11 @@ export class SideMenuComponent {
     const equipment = [
       this.equipmentProjector.nativeElement.checked ? 'Projector' : null,
       this.equipmentWhiteboard.nativeElement.checked ? 'Whiteboard' : null,
-      this.equipmentVideoConference.nativeElement.checked ? 'Video Conference' : null,
+      this.equipmentVideoSystem.nativeElement.checked ? 'Video System' : null,
       this.equipmentSoundSystem.nativeElement.checked ? 'Sound System' : null,
     ].filter(e => e !== null);
 
-    filteredRooms = rooms.filter(room => {
+    filteredRooms = this.rooms.filter(room => {
       const matchesType = type === 'none' || room.type === type;
 
       let minCapacity, maxCapacity;
@@ -68,8 +87,7 @@ export class SideMenuComponent {
       return matchesType && matchesCapacity && matchesEquipment;
     });
     console.log(filteredRooms);
-    this.roomService.saveRooms(filteredRooms);
+    this.roomService.filterRooms(filteredRooms);
   }
-
 
 }

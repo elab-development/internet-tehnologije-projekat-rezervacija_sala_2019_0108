@@ -1,5 +1,6 @@
 // calendar.component.ts
 import { Component, OnInit, Input } from '@angular/core';
+import { Reservation } from '../../../../models/reservation';
 
 
 @Component({
@@ -8,6 +9,7 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./calendar.component.css']
 })
 export class CalendarComponent implements OnInit {
+ 
 
   @Input() styleMode: 'room-detail' | 'side-menu';
 
@@ -19,6 +21,9 @@ export class CalendarComponent implements OnInit {
   currentYear: number;
   daysInMonth: number[];
   firstDayOfMonth: number;
+  usersReservations?: Reservation [];
+
+
   
 
 
@@ -33,6 +38,29 @@ export class CalendarComponent implements OnInit {
 
   ngOnInit() {
     this.generateCalendar();
+  }
+
+  setRoomsReservations(reservations: Reservation[]) {
+    this.usersReservations = reservations;
+    if(this.usersReservations){
+      console.log("usao");
+      let datumi: Date[] = this.usersReservations?.map(reservation => {
+        return reservation.date;
+      }) || [];
+      this.reservedDates = this.convertDatesToStrings(datumi);
+      console.log(this.reservedDates);
+    }
+    this.generateCalendar();
+  }
+
+  convertDatesToStrings(datumi: Date[]): string[] {
+    return datumi.map((datum) => {
+      var noviDatum = new Date(datum);
+      var godina = noviDatum.getFullYear();
+      var mesec = (noviDatum.getMonth() + 1).toString().padStart(2, '0'); 
+      var dan = noviDatum.getDate().toString().padStart(2, '0');
+      return `${godina}-${mesec}-${dan}`;
+    });
   }
 
   generateCalendar(): void {

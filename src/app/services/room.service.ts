@@ -1,40 +1,65 @@
-import { Injectable } from '@angular/core';
-import { Room } from '../models/room';
-import { BehaviorSubject } from 'rxjs';
+  import { BehaviorSubject, Observable } from "rxjs";
+  import { Room } from "../models/room";
+  import { HttpClient } from "@angular/common/http";
+  import { Injectable, OnInit } from "@angular/core";
+  import { map, tap } from 'rxjs/operators';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class RoomService {
 
-  private initialRooms: Room[] = [
-    new Room(1, "Sala 1", "Conference Room", 79, "Zgrada A", ["Whiteboard", "Projector"], 80, 382, "Sala 1 predstavlja savršeno mesto za vaše konferencije, radionice i sastanke. Opremljena najsavremenijom audio i video tehnikom, uključujući projektor visoke rezolucije, zvučni sistem vrhunskog kvaliteta i interaktivnu tablu, ova sala pruža sve što je potrebno za efikasan i produktivan sastanak. Prostrana i svetla, sa udobnim sedištima i klimatizovanim prostorom, Sala 1 nudi idealno okruženje za učenje, diskusiju i kolaboraciju.", "https://images.squarespace-cdn.com/content/v1/58cfd41c17bffcb09bd654f0/1662742343187-U42DV7HUFOA8LY60XQGF/Tech+Trends+for+the+Modern+Conference+Room"),
-    new Room(2, "Sala 2", "Conference Room", 56, "Zgrada A", ["Projector", "Whiteboard", "Sound System"], 72, 134, "Opis sale 2", "https://images.squarespace-cdn.com/content/v1/58cfd41c17bffcb09bd654f0/1662742343187-U42DV7HUFOA8LY60XQGF/Tech+Trends+for+the+Modern+Conference+Room"),
-    new Room(3, "Sala 3", "Meeting Room", 57, "Zgrada C", ["Whiteboard", "Sound System", "Projector"], 87, 278, "Opis sale 3", "https://images.squarespace-cdn.com/content/v1/58cfd41c17bffcb09bd654f0/1662742343187-U42DV7HUFOA8LY60XQGF/Tech+Trends+for+the+Modern+Conference+Room"),
-    new Room(4, "Sala 4", "Classroom", 40, "Zgrada C", ["Projector"], 60, 287, "Opis sale 4", "https://images.squarespace-cdn.com/content/v1/58cfd41c17bffcb09bd654f0/1662742343187-U42DV7HUFOA8LY60XQGF/Tech+Trends+for+the+Modern+Conference+Room"),
-    new Room(5, "Sala 5", "Auditorium", 27, "Zgrada C", ["Whiteboard"], 30, 371, "Opis sale 5", "https://images.squarespace-cdn.com/content/v1/58cfd41c17bffcb09bd654f0/1662742343187-U42DV7HUFOA8LY60XQGF/Tech+Trends+for+the+Modern+Conference+Room"),
-  ];
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class RoomService implements OnInit {
 
-  private roomsSubject = new BehaviorSubject<Room[]>(this.initialRooms);
-  public rooms$ = this.roomsSubject.asObservable();
+    private roomsSubject = new BehaviorSubject<Room[]>([]);
+    public rooms$ = this.roomsSubject.asObservable();
 
-  saveRooms(rooms: Room[]) {
-    localStorage.setItem("rooms", JSON.stringify(rooms));
-    this.roomsSubject.next(rooms);
+    constructor(private httpClient: HttpClient) {
+      this.loadRooms().subscribe(); 
+    }
 
+    ngOnInit(): void {
+    }
+
+
+    loadRooms(): Observable<Room[]> {
+      return this.httpClient.get<{data: Room[]}>('http://127.0.0.1:8000/api/rooms').pipe(
+        map(response => response.data),
+        map(rooms => rooms.map(room => {
+          // Postavite novi imageUrl za svaku sobu
+          room.imageUrl = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2txP24J7E7sL8DhiWQKsRm2Rj3C5FX9CASNn_egFr6g&s';
+          return room;
+        })),
+        tap(rooms => {
+          console.log(rooms); // Opcionalno: Logujte izmenjene sobe
+          this.roomsSubject.next(rooms); // Ažurirajte BehaviorSubject sa izmenjenim sobama
+        })
+      );
+    }
+    
+
+    getRooms(): Observable<Room[]> {
+      return this.rooms$; 
+    }
+
+    filterRooms(rooms: Room[]){
+      this.roomsSubject.next(rooms);
+    }
+
+    addRoom(room: Room): void {
+      this.httpClient.post<Room>('http://127.0.0.1:8000/api/rooms', room).subscribe(newRoom => {
+        this.loadRooms(); 
+      });
+    }
   }
-  loadRooms(): Room[] {
-    const rooms = localStorage.getItem('rooms');
-    return rooms ? JSON.parse(rooms) : this.initialRooms;
-  }
-  addRoom(room: Room) {
-    let rooms = this.loadRooms();
-    rooms.push(room);
-    this.saveRooms(rooms);
-  }
-  setInitialRooms(){
-    this.saveRooms(this.initialRooms);
-  }
 
-
-}
+  export interface RoomGetterInterface {
+    Rooms: {
+      rooms: Room[];
+    },
+    page: {
+      size: number,
+      totalElements: number,
+      totalPages: number,
+      number: number
+    }  
+  }

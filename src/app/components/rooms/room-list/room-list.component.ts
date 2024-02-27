@@ -19,6 +19,7 @@ export class RoomListComponent implements OnInit {
       this.rooms = rooms;
     });
   }
+  
 
   ngOnDestroy(): void {
     if (this.roomsSubscription) {

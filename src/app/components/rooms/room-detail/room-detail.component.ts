@@ -10,38 +10,56 @@ import { ReserveComponent } from '../../reserve/reserve.component';
 import { CalendarComponent } from './calendar/calendar.component';
 import { Reservation } from '../../../models/reservation';
 import { User } from '../../../models/user';
+import { ReservationserviceService } from '../../../services/reservationservice.service';
 
 @Component({
   selector: 'app-room-detail',
   templateUrl: './room-detail.component.html',
-  styleUrls: ['./room-detail.component.css'] // Ispravljeno sa styleUrl na styleUrls i u niz
+  styleUrls: ['./room-detail.component.css']
 })
 export class RoomDetailComponent implements OnInit, OnDestroy {
 
-  @ViewChild(CalendarComponent) calendarComponent!: CalendarComponent; // Ispravljeno na camelCase
+  @ViewChild(CalendarComponent) calendarComponent!: CalendarComponent;
 
-  public room?: Room; // Učinite opcionalnim ili inicijalizujte
-  private roomSub!: Subscription; // Dodato za upravljanje pretplatom na sobe
+  public room?: Room;
+  private roomSub!: Subscription;
   private userSub!: Subscription;
+  private reservationSub!: Subscription;
   showDialog = false;
   isAuthenticated = false;
 
-  constructor(private roomService: RoomService, private activatedRoute: ActivatedRoute, public dialog: MatDialog, private authService: AuthService) { }
+  constructor(private roomService: RoomService,
+    private activatedRoute: ActivatedRoute,
+    public dialog: MatDialog,
+    private authService: AuthService,
+    private reservationService: ReservationserviceService) { }
 
-  ngOnInit(): void {
-    const id = +this.activatedRoute.snapshot.paramMap.get('id');
-    // Kreiranje i upravljanje pretplatom na rooms$
-    this.roomSub = this.roomService.rooms$.subscribe(rooms => {
-      this.room = rooms.find(room => room.id === id);
-    });
-    this.userSub = this.authService.user.subscribe(user => {
-      this.isAuthenticated = !!user;
-    });
-  }
+    ngOnInit(): void {
+      const id = +this.activatedRoute.snapshot.paramMap.get('id');
+      this.roomSub = this.roomService.rooms$.subscribe(rooms => {
+        
+        const room = rooms.find(room => room.id === id);
+        if (room) {
+          if (typeof room.equipment === 'string') {
+            room.equipment = JSON.parse(room.equipment);
+          }
+          this.room = room;
+          this.reservationSub = this.reservationService.loadReservationsForRoom(this.room.id).subscribe(reservations => {
+            console.log(reservations);
+            this.calendarComponent.setRoomsReservations(reservations);
+          });
+        }
+      });
+      this.userSub = this.authService.user.subscribe(user => {
+        this.isAuthenticated = !!user;
+      });
+    }
+    
 
   ngOnDestroy(): void {
     this.roomSub.unsubscribe();
-    this.userSub.unsubscribe();    
+    this.userSub.unsubscribe();
+    this.reservationSub.unsubscribe();
   }
 
   openDialog(): void {
@@ -55,9 +73,9 @@ export class RoomDetailComponent implements OnInit, OnDestroy {
     }
     const reservation = new Reservation(
       1,
-      this.room!, // Pretpostavka da je soba već postavljena; koristite ! operator sa oprezom
+      this.room!,
       new Date(this.calendarComponent.selectedDate),
-      new User('1', "plejser@holdic", "token", new Date()) // Ovo treba da bude dinamički dobijeni podaci o trenutno prijavljenom korisniku
+      new User('1', "plejser@holdic", "token", new Date())
     );
     this.dialog.open(ReserveComponent, {
       width: '20%',

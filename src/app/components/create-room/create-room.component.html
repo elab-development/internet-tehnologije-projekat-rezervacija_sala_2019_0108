@@ -15,13 +15,19 @@
     <div class="row">
       <div class="col-md-6 form-group">
         <label for="type">Type</label>
-        <input ngModel name="type" #type="ngModel" type="text" class="form-control" id="type" placeholder="Enter room type" required>
+        <select ngModel name="type" #type="ngModel" class="form-control" id="type" required>
+          <option value="Conference Room">Conference Room</option>
+          <option value="Classroom">Classroom</option>
+          <option value="Meeting Room">Meeting Room</option>
+          <option value="Auditorium">Auditorium</option>
+        </select>
       </div>
       <div class="col-md-6 form-group">
         <label for="capacity">Capacity</label>
         <input ngModel name="capacity" #capacity="ngModel" type="number" class="form-control" id="capacity" placeholder="Enter room capacity" required>
       </div>
     </div>
+    
     
     <div class="row">
       <div class="col-md-6 form-group">
@@ -70,6 +76,6 @@
       <textarea ngModel name="description" #description="ngModel" class="form-control" id="description" rows="3" placeholder="Enter room description" required></textarea>
     </div>
     
-    <button type="submit" class="btn btn-primary">Create Room</button>
+    <button type="submit" class="btn btn-primary" [disabled]="!roomForm.valid">Create Room</button>
   </form>
 </div>

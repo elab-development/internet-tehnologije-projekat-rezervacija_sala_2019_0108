@@ -22,7 +22,7 @@ export class CreateRoomComponent {
     const newRoom = new Room(
       +formValue.id,
       formValue.name,
-      formValue.type,
+      formValue.type, 
       +formValue.capacity,
       formValue.location,
       [
@@ -30,14 +30,15 @@ export class CreateRoomComponent {
         formValue.equipmentSoundEquipment ? 'Sound Equipment' : null,
         formValue.equipmentWhiteboard ? 'Whiteboard' : null,
         formValue.equipmentSoundSystem ? 'Sound System' : null,
-      ].filter(e => e !== null),
+      ].filter(e => e !== null), 
       +formValue.squareFootage,
       +formValue.price,
       formValue.description,
       formValue.imageUrl
     );
-    this.roomService.addRoom(newRoom);
-    form.reset();
-    this.router.navigate(['/rooms']);
+
+    this.roomService.addRoom(newRoom); 
+    form.reset(); 
+    this.router.navigate(['/rooms']); 
   }
 }
