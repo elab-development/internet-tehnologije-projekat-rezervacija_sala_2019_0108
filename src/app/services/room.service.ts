@@ -1,65 +1,94 @@
-  import { BehaviorSubject, Observable } from "rxjs";
-  import { Room } from "../models/room";
-  import { HttpClient } from "@angular/common/http";
-  import { Injectable, OnInit } from "@angular/core";
-  import { map, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from "rxjs";
+import { Room } from "../models/room";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Injectable, OnInit } from "@angular/core";
+import { map, tap } from 'rxjs/operators';
+import { AuthService } from "./auth.service";
+import { PaginationService } from "./pagination.service";
 
 
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class RoomService implements OnInit {
+@Injectable({
+  providedIn: 'root'
+})
+export class RoomService implements OnInit {
 
-    private roomsSubject = new BehaviorSubject<Room[]>([]);
-    public rooms$ = this.roomsSubject.asObservable();
+  private roomsSubject = new BehaviorSubject<Room[]>([]);
+  public rooms$ = this.roomsSubject.asObservable();
+  private numberOfPagesSubject = new BehaviorSubject<number>(1);
+  public numberOfPages$ = this.numberOfPagesSubject.asObservable();
+  public numberOfRooms=6;
 
-    constructor(private httpClient: HttpClient) {
-      this.loadRooms().subscribe(); 
-    }
+  constructor(private httpClient: HttpClient, 
+    private authService: AuthService, 
+    private paginationService: PaginationService) {
+      this.loadRooms().subscribe();
+  }
 
-    ngOnInit(): void {
-    }
+  ngOnInit(): void {
+  }
 
 
-    loadRooms(): Observable<Room[]> {
-      return this.httpClient.get<{data: Room[]}>('http://127.0.0.1:8000/api/rooms').pipe(
-        map(response => response.data),
-        map(rooms => rooms.map(room => {
-          // Postavite novi imageUrl za svaku sobu
-          room.imageUrl = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2txP24J7E7sL8DhiWQKsRm2Rj3C5FX9CASNn_egFr6g&s';
-          return room;
-        })),
-        tap(rooms => {
-          console.log(rooms); // Opcionalno: Logujte izmenjene sobe
-          this.roomsSubject.next(rooms); // Ažurirajte BehaviorSubject sa izmenjenim sobama
-        })
-      );
-    }
-    
+  loadRooms(): Observable<Room[]> {
+    return this.httpClient.get<{ data: Room[] }>('http://127.0.0.1:8000/api/rooms').pipe(
+      map(response => response.data),
+      map(rooms => rooms.map(room => {
+        room.imageUrl = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2txP24J7E7sL8DhiWQKsRm2Rj3C5FX9CASNn_egFr6g&s'; // Postavite novi imageUrl za svaku sobu
+        return room;
+      })),
+      tap(rooms => {
+        this.roomsSubject.next(rooms);
+        this.updateNumberOfPages(rooms.length);
+      })
+    );
+  }
 
-    getRooms(): Observable<Room[]> {
-      return this.rooms$; 
-    }
 
-    filterRooms(rooms: Room[]){
-      this.roomsSubject.next(rooms);
-    }
+  getRooms(page: number, pageSize: number = 6): Observable<Room[]> {
+    return this.rooms$.pipe(
+      map(rooms => {
+        const startIndex = (page - 1) * pageSize;
+        return rooms.slice(startIndex, startIndex + pageSize);
+      })
+    );  
+  }
+  
 
-    addRoom(room: Room): void {
-      this.httpClient.post<Room>('http://127.0.0.1:8000/api/rooms', room).subscribe(newRoom => {
-        this.loadRooms(); 
+  filterRooms(rooms: Room[]) {
+    this.paginationService.changePage(1);
+    this.roomsSubject.next(rooms);
+    this.updateNumberOfPages(rooms.length);
+  }
+
+  addRoom(room: Room): void {
+    if (this.authService.isUserAuthenticated()) { 
+      this.authService.token$.subscribe(token => {
+        const headers = {
+          'Authorization': `Bearer ${token}`
+        };
+
+        this.httpClient.post<Room>('http://127.0.0.1:8000/api/rooms', room, { headers })
+          .subscribe(() => {
+            this.loadRooms();
+          });
       });
-    }
+    } 
   }
 
-  export interface RoomGetterInterface {
-    Rooms: {
-      rooms: Room[];
-    },
-    page: {
-      size: number,
-      totalElements: number,
-      totalPages: number,
-      number: number
-    }  
+  private updateNumberOfPages(totalItems: number): void {
+    const newNumberOfPages = Math.ceil(totalItems / 6);
+    this.numberOfPagesSubject.next(newNumberOfPages);
   }
+}
+  
+  export interface RoomGetterInterface {
+    //NAPRAVI CUSTOM INTERFACE OPET
+  Rooms: {
+    rooms: Room[];
+  },
+  page: {
+    size: number,
+    totalElements: number,
+    totalPages: number,
+    number: number
+  }
+}

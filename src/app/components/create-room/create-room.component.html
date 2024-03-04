@@ -3,16 +3,9 @@
   <form #roomForm="ngForm" (ngSubmit)="onSubmit(roomForm)">
     <div class="row">
       <div class="col-md-6 form-group">
-        <label for="id">Room ID</label>
-        <input ngModel name="id" #id="ngModel" type="number" class="form-control" id="id" placeholder="Enter room ID" required>
-      </div>
-      <div class="col-md-6 form-group">
         <label for="name">Name</label>
         <input ngModel name="name" #name="ngModel" type="text" class="form-control" id="name" placeholder="Enter room name" required>
       </div>
-    </div>
-    
-    <div class="row">
       <div class="col-md-6 form-group">
         <label for="type">Type</label>
         <select ngModel name="type" #type="ngModel" class="form-control" id="type" required>
@@ -22,9 +15,18 @@
           <option value="Auditorium">Auditorium</option>
         </select>
       </div>
+    
+    </div>
+    
+    <div class="row">
+      
       <div class="col-md-6 form-group">
         <label for="capacity">Capacity</label>
         <input ngModel name="capacity" #capacity="ngModel" type="number" class="form-control" id="capacity" placeholder="Enter room capacity" required>
+      </div>
+      <div class="col-md-6 form-group">
+        <label for="price">Price</label>
+        <input ngModel name="price" #price="ngModel" type="number" class="form-control" id="price" placeholder="Enter room price" required>
       </div>
     </div>
     
@@ -41,11 +43,7 @@
     </div>
     
     <div class="row">
-      <div class="col-md-6 form-group">
-        <label for="price">Price</label>
-        <input ngModel name="price" #price="ngModel" type="number" class="form-control" id="price" placeholder="Enter room price" required>
-      </div>
-      <div class="col-md-6 form-group">
+      <div class="col-md-12 form-group">
         <label for="imageUrl">Image URL</label>
         <input ngModel name="imageUrl" #imageUrl="ngModel" type="text" class="form-control" id="imageUrl" placeholder="Enter room image URL" required>
       </div>

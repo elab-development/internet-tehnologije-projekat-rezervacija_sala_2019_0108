@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { RoomService } from '../../../services/room.service';
 import { Room } from '../../../models/room';
+import { PaginationService } from '../../../services/pagination.service';
 
 @Component({
   selector: 'app-room-list',
@@ -12,10 +13,11 @@ export class RoomListComponent implements OnInit {
   rooms: Room[] = [];
   private roomsSubscription!: Subscription;
 
-  constructor(private roomService: RoomService) {}
+  constructor(private roomService: RoomService, private paginationService: PaginationService) {}
 
   ngOnInit(): void {
-    this.roomsSubscription = this.roomService.rooms$.subscribe(rooms => {
+
+    this.roomsSubscription = this.roomService.getRooms(this.paginationService.getCurrentPage()).subscribe(rooms => {
       this.rooms = rooms;
     });
   }
@@ -26,4 +28,12 @@ export class RoomListComponent implements OnInit {
       this.roomsSubscription.unsubscribe();
     }
   }
+
+  changePage(page: number){
+    this.roomsSubscription = this.roomService.getRooms(page).subscribe(rooms => {
+      this.rooms = rooms;
+    });
+  }
+
+
 }

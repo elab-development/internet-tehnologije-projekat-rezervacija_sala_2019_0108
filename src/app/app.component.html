@@ -7,7 +7,7 @@
             <app-side-menu></app-side-menu>
         </div>
         <!-- Glavni sadržaj -->
-        <div class="col-md-10" style="margin-top: 10px;">
+        <div [ngClass]="sideMenu ? 'col-md-10' : 'col-md-12'" style="margin-top: 10px;">
             <router-outlet></router-outlet>
         </div>
     </div>

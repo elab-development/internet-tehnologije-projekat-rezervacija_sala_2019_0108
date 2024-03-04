@@ -22,6 +22,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { LoadingSpinnerComponent } from './styles/loading-spinner/loading-spinner.component';
 import { CreateRoomComponent } from './components/create-room/create-room.component';
 import { AuthGuard } from './auth/auth/authGuard/authGuard';
+import { PaginationComponent } from './footer/pagination/pagination.component';
 
 const routes: Routes = [
   
@@ -29,7 +30,7 @@ const routes: Routes = [
   { path: 'createRoom', component: CreateRoomComponent, canActivate: [AuthGuard] },
   { path: 'reserve', component: ReserveComponent },
   { path: 'login', component: AuthComponent },
-  { path: 'rooms', component: RoomListComponent },
+  { path: 'rooms', component: RoomsComponent },
   { path: '', redirectTo: '/rooms', pathMatch: 'full' },
   { path: '**', redirectTo: '/rooms', pathMatch: 'full' }
 ];
@@ -47,7 +48,8 @@ const routes: Routes = [
     ReserveComponent,
     AuthComponent,
     LoadingSpinnerComponent,
-    CreateRoomComponent
+    CreateRoomComponent,
+    PaginationComponent
   ],
   imports: [
     RouterModule.forRoot(routes),

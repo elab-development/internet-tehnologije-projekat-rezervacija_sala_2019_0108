@@ -1,6 +1,8 @@
 // calendar.component.ts
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Host, Optional } from '@angular/core';
 import { Reservation } from '../../../../models/reservation';
+import { SideMenuComponent } from '../../../side-menu/side-menu.component';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -12,25 +14,23 @@ export class CalendarComponent implements OnInit {
  
 
   @Input() styleMode: 'room-detail' | 'side-menu';
-
   @Input() hasReserved: boolean = true;
-
   @Input() selectedDate: string = '';
+
 
   currentMonth: number;
   currentYear: number;
   daysInMonth: number[];
   firstDayOfMonth: number;
   usersReservations?: Reservation [];
+  private reservationSub!: Subscription;
+  private allReservations?: Reservation[];
 
 
-  
+  reservedDates: string[] = [];
 
 
-  reservedDates: string[] = ['2024-02-10', '2024-02-15'];
-
-
-  constructor() {
+  constructor(@Optional() @Host() private parentComponent: SideMenuComponent) {
     const today = new Date();
     this.currentMonth = today.getMonth();
     this.currentYear = today.getFullYear();
@@ -43,7 +43,6 @@ export class CalendarComponent implements OnInit {
   setRoomsReservations(reservations: Reservation[]) {
     this.usersReservations = reservations;
     if(this.usersReservations){
-      console.log("usao");
       let datumi: Date[] = this.usersReservations?.map(reservation => {
         return reservation.date;
       }) || [];
@@ -92,10 +91,15 @@ export class CalendarComponent implements OnInit {
   selectDate(day: number) {
     const dateStr = `${this.currentYear}-${('0' + (this.currentMonth + 1)).slice(-2)}-${('0' + day).slice(-2)}`;
     
-    // Proverite da li je datum već selektovan ili rezervisan pre nego što postavite kao selektovan.
+    if(this.parentComponent){
+      this.parentComponent.filterDates(dateStr);
+    }
+
     if (this.selectedDate === dateStr) {
-      // Ako je datum već selektovan, možda ćete hteti da ništa ne radite ili da obavestite korisnika.
       this.selectedDate = '';
+      if(this.parentComponent){
+        this.parentComponent.filterDates(this.selectedDate);
+      }
       return;
     }
   
@@ -105,6 +109,7 @@ export class CalendarComponent implements OnInit {
       this.selectedDate = dateStr;
     }
   }
+
   resetCalendar(){
     this.selectedDate = '';
   }

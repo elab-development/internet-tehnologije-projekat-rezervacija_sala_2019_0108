@@ -25,6 +25,7 @@ export class RoomDetailComponent implements OnInit, OnDestroy {
   private roomSub!: Subscription;
   private userSub!: Subscription;
   private reservationSub!: Subscription;
+  private currentUser: User;
   showDialog = false;
   isAuthenticated = false;
 
@@ -52,6 +53,7 @@ export class RoomDetailComponent implements OnInit, OnDestroy {
       });
       this.userSub = this.authService.user.subscribe(user => {
         this.isAuthenticated = !!user;
+        this.currentUser = user;
       });
     }
     
@@ -67,22 +69,44 @@ export class RoomDetailComponent implements OnInit, OnDestroy {
       alert("You have to select a date to reserve!");
       return;
     }
+    
+    if(!this.isDateAfterToday(this.calendarComponent.selectedDate)){
+      alert("Selected date has to be a future date!");
+      return;
+    }
+
     if (!this.isAuthenticated) {
       alert("You have to be logged in to place a reservation!");
       return;
     }
+    this.authService.currentUser.subscribe((user: User) => {
+      // Ovde radite sa user objektom
+      console.log(user);
+      // Na primer, ako želite da postavite trenutnog korisnika u neku promenljivu
+      this.currentUser = user;
+    });
+    
     const reservation = new Reservation(
       1,
       this.room!,
       new Date(this.calendarComponent.selectedDate),
-      new User('1', "plejser@holdic", "token", new Date())
+      this.currentUser
     );
     this.dialog.open(ReserveComponent, {
-      width: '20%',
+      width: '25%',
       height: '80%',
       data: { reservation }
     });
   }
+  isDateAfterToday(dateString: string): boolean {
+    const inputDate = new Date(dateString);
+  
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+  
+    return inputDate > today;
+  }
+  
 }
 
 export interface DialogData {

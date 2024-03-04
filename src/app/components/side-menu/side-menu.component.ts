@@ -1,15 +1,19 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { CalendarComponent } from '../rooms/room-detail/calendar/calendar.component';
 import { RoomService } from '../../services/room.service';
 import { Room } from '../../models/room';
 import { Subscription } from 'rxjs';
+import { Reservation } from '../../models/reservation';
+import { ReservationserviceService } from '../../services/reservationservice.service';
+import { PaginationService } from '../../services/pagination.service';
 
 @Component({
   selector: 'app-side-menu',
   templateUrl: './side-menu.component.html',
   styleUrl: './side-menu.component.css'
 })
-export class SideMenuComponent implements OnInit, OnDestroy{
+export class SideMenuComponent implements OnInit, OnDestroy {
+
 
   @ViewChild('roomTypeSelect') roomTypeSelect!: ElementRef;
   @ViewChild('roomCapacitySelect') roomCapacitySelect!: ElementRef;
@@ -20,16 +24,26 @@ export class SideMenuComponent implements OnInit, OnDestroy{
   @ViewChild('equipmentVideoSystem') equipmentVideoSystem!: ElementRef;
   @ViewChild('equipmentSoundSystem') equipmentSoundSystem!: ElementRef;
 
+  @Output() filtersApplied = new EventEmitter();
+
+
+
   private roomsSubscription!: Subscription;
   rooms: Room[] = [];
+  selectedDate: string = "";
+  private reservationSub!: Subscription;
+  private allReservations?: Reservation[];
 
-  constructor(private roomService: RoomService) { }
+  constructor(private roomService: RoomService, 
+            private reservationService: ReservationserviceService,
+            private paginationService: PaginationService) { }
 
   ngOnInit() {
-    this.roomsSubscription = this.roomService.getRooms().subscribe(rooms => {
+    this.roomsSubscription = this.roomService.loadRooms().subscribe(rooms => {
       this.rooms = rooms;
     });
   }
+  
 
   ngOnDestroy() {
     this.roomsSubscription.unsubscribe();
@@ -48,16 +62,24 @@ export class SideMenuComponent implements OnInit, OnDestroy{
 
   changeList() {
     this.roomService.loadRooms().subscribe(rooms => {
-      this.applyFilters(); 
+      this.rooms = rooms;
+      this.applyFilters();
     });
   }
-  
 
-  applyFilters(){
+  filterDates(dateStr: string) {
+    this.selectedDate = dateStr;
+    this.reservationSub = this.reservationService.loadReservations().subscribe(reservations => {
+      this.allReservations = reservations;
+      console.log("usao");
+    });
+    this.changeList();
+  }
+
+  applyFilters() {
     let filteredRooms: Room[] = [];
 
     const type = this.roomTypeSelect.nativeElement.value;
-    console.log(type);
     const capacity = this.roomCapacitySelect.nativeElement.value;
     const equipment = [
       this.equipmentProjector.nativeElement.checked ? 'Projector' : null,
@@ -80,14 +102,26 @@ export class SideMenuComponent implements OnInit, OnDestroy{
         maxCapacity = Infinity;
       }
 
+      const matchesDateFree = this.CalendarComponent.selectedDate ? this.checkIfDateIsFree(room) : true;
+
       const matchesCapacity = room.capacity >= minCapacity && room.capacity <= maxCapacity;
 
       const matchesEquipment = equipment.every(eq => room.equipment.includes(eq));
 
-      return matchesType && matchesCapacity && matchesEquipment;
+      return matchesType && matchesCapacity && matchesEquipment && matchesDateFree;
     });
-    console.log(filteredRooms);
+    this.paginationService.changePage(1);
     this.roomService.filterRooms(filteredRooms);
   }
-
+  checkIfDateIsFree(room: Room): boolean {
+    return !this.allReservations.some(reservation => {
+      var noviDatum = new Date(reservation.date);
+      var godina = noviDatum.getFullYear();
+      var mesec = (noviDatum.getMonth() + 1).toString().padStart(2, '0');
+      var dan = noviDatum.getDate().toString().padStart(2, '0');
+      let date = `${godina}-${mesec}-${dan}`;
+      return date === this.selectedDate && reservation.room.id === room.id;
+    });
+  }
+  
 }

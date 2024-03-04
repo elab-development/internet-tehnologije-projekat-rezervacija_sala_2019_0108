@@ -1,25 +1,27 @@
 <div class="form-container">
     <h2>Rezervacija Sale</h2>
     <form>
-        <mat-form-field appearance="fill">
-            <mat-label>Room Name: </mat-label>
-            <input matInput [value]="data.reservation.room.name" readonly>
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-            <mat-label>Room Location: </mat-label>
-            <input matInput [value]="data.reservation.room.location" readonly>
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-            <mat-label>Date: </mat-label>
-            <input matInput [value]="data.reservation.date | date: 'shortDate'" readonly>
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-            <mat-label>Email: </mat-label>
-            <input matInput [value]="data.reservation.user.email" readonly>
-        </mat-form-field>
-
-        <br>
-        <button mat-button class="confirm-button">Confirm</button>
-        <button mat-button class="cancel-button" (click)="onCancelClick()">Cancel</button>
+        <div class="fields-row">
+            <mat-form-field appearance="fill">
+                <mat-label>Room Name: </mat-label>
+                <input matInput [value]="data.reservation.room.name" readonly>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Room Location: </mat-label>
+                <input matInput [value]="data.reservation.room.location" readonly>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Date: </mat-label>
+                <input matInput [value]="data.reservation.date | date: 'shortDate'" readonly>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Email: </mat-label>
+                <input matInput [value]="data.reservation.user.email" readonly>
+            </mat-form-field>
+        </div>
+        <div>
+            <button mat-button class="confirm-button">Confirm</button>
+            <button mat-button class="cancel-button" (click)="onCancelClick()">Cancel</button>
+        </div>
     </form>
 </div>

@@ -10,6 +10,7 @@ import { map, tap } from 'rxjs/operators';
 })
 export class ReservationserviceService {
 
+
   private reservationSubject = new BehaviorSubject<Reservation[]>([]);
   public reservations$ = this.reservationSubject.asObservable();
 
@@ -22,20 +23,21 @@ export class ReservationserviceService {
       map(response => response.data),
       tap(reservations => {
         this.reservationSubject.next(reservations);
-        console.log(reservations);
       })
     );
   }
   loadReservationsForRoom(roomId: number): Observable<Reservation[]> {
-    console.log("usao");
     return this.httpClient.get<{data: Reservation[]}>('http://127.0.0.1:8000/api/rooms/' + roomId + '/reservations').pipe(
       map(response => response.data),
       tap(reservations => {
         this.reservationSubject.next(reservations);
-        console.log(reservations);
       })
     );
   }
   
+  addReservation(reservation: Reservation) {
+    this.httpClient.post<Reservation>('http://127.0.0.1:8000/api/reservations', reservation).subscribe(newReservation => {
+      });
+  }
 
 }

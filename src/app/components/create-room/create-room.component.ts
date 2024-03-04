@@ -39,6 +39,7 @@ export class CreateRoomComponent {
 
     this.roomService.addRoom(newRoom); 
     form.reset(); 
+    this.roomService.loadRooms();
     this.router.navigate(['/rooms']); 
   }
 }

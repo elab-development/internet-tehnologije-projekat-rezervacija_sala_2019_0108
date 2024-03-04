@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, tap, timeout } from 'rxjs';
+import { BehaviorSubject, Observable, tap, timeout } from 'rxjs';
 import { User } from '../models/user';
 import { Router } from '@angular/router';
 
@@ -10,10 +10,18 @@ import { Router } from '@angular/router';
 export class AuthService {
 
   user = new BehaviorSubject<User>(null);
+  currentUser = this.user.asObservable();
+  private tokenSubject = new BehaviorSubject<string>(null);
+  
+
+  usersToken? ;
   private tokenExpirationTimer: any;
 
   constructor(private httpClient: HttpClient, private router: Router) { }
 
+  get token$(): Observable<string> {
+    return this.tokenSubject.asObservable();
+  }
 
   signUp(email: string, password: string) {
     return this.httpClient.post<AuthResponseData>
@@ -24,7 +32,7 @@ export class AuthService {
           returnSecureToken: true
         }).pipe(tap(
           resData => {
-            this.handleAuthentication(resData.email, resData.localId, resData.idToken, +resData.expiresIn);
+            this.handleAuthentication(resData.email, resData.localId, resData.idToken.trim(), +resData.expiresIn);
           }
         ))
       ;
@@ -56,7 +64,7 @@ export class AuthService {
       let timeout = new Date(userData._tokenExpirationDate).getTime() - new Date().getTime();
       this.autoLogout(timeout);
     }
-
+    this.tokenSubject.next(loadedUser.token);
   }
 
   logout(){
@@ -67,6 +75,7 @@ export class AuthService {
       clearTimeout(this.tokenExpirationTimer);
     }
     this.tokenExpirationTimer = null;
+    this.tokenSubject.next(null);
   }
 
   autoLogout(expirationDuration: number){
@@ -79,6 +88,7 @@ export class AuthService {
   private handleAuthentication(email: string, userId: string, token: string, expiresIn: number) {
     let expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
     const user = new User(userId, email, token, expirationDate);
+    this.tokenSubject.next(token);
     this.user.next(user);
     localStorage.setItem('userData', JSON.stringify(user));
     this.autoLogout(expiresIn * 1000);

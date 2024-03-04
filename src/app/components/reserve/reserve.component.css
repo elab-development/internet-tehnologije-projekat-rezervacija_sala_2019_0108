@@ -1,37 +1,51 @@
 .form-container {
   display: flex;
   flex-direction: column;
-  align-items: center; /* Centrira sadržaj po horizontalnoj osi */
-  max-width: 600px;
+  align-items: center;
+  max-width: 1000px;
+  width: 100%;
   margin: auto;
-  padding: 20px;
-  gap: 20px;
+  padding: 40px; /* Ovo je već bilo postavljeno, ali uverite se da odgovara vašim potrebama */
+  gap: 30px;
   background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-  
-  .mat-form-field {
-    width: 100%; /* Omogućava da mat-form-field zauzme punu širinu kontejnera */
-  }
-  
-  .confirm-button, .cancel-button {
-    width: 100px; /* Da dugmad budu jednake širine */
-  }
-  
-  .confirm-button, .cancel-button {
-    margin-right: 10px; /* Dodaje desni razmak za Confirm dugme */
-    width: 100px; /* Održava širinu dugmadi */
-    color: #fff; /* Bela boja teksta */
-  }
-  
-  .cancel-button {
-    margin-right: 0; /* Uklanja desni razmak za Cancel dugme */
-    background-color: #f44336; /* Crvena boja pozadine */
-  }
-  
-  .confirm-button {
-    background-color: #4CAF50; /* Zelena boja pozadine */
-  }
-  
+.fields-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  width: calc(100% - 20px); /* Smanjuje širinu za ukupno 20px da bi se stvorio prostor od 10px sa svake strane */
+  padding: 0 10px; /* Dodaje padding od 10px sa svake strane za polja */
+  justify-content: center;
+}
+
+.mat-form-field {
+  flex-grow: 1;
+  min-width: 180px; /* Ako je potrebno, prilagodite ovo da osigurate da polja ne postanu previše mala */
+}
+
+.confirm-button, .cancel-button {
+  width: auto;
+  padding: 10px 20px;
+  margin: 20px;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.confirm-button:hover, .cancel-button:hover {
+  transform: scale(1.05);
+  cursor: pointer;
+}
+
+.cancel-button {
+  background-color: #f44336;
+  color: #fff;
+}
+
+.confirm-button {
+  background-color: #4CAF50;
+  color: #fff;
+}
