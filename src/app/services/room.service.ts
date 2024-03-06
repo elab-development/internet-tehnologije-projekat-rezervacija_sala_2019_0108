@@ -60,7 +60,7 @@ export class RoomService implements OnInit {
   }
 
   addRoom(room: Room): void {
-    if (this.authService.isUserAuthenticated()) { 
+    if (this.authService.isUserAdmin()) { 
       this.authService.token$.subscribe(token => {
         const headers = {
           'Authorization': `Bearer ${token}`

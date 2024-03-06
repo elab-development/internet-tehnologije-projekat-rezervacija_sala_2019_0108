@@ -13,6 +13,7 @@ export class PaginationComponent implements OnInit {
   @Input() itemsPerPage: number = 10;
   @Input() totalItems: number = 0;
   public totalPages = 5;
+  @Output() pageChanged = new EventEmitter<number>();
 
   pages: number[] = [];
   private numberOfPagesSub: Subscription = new Subscription();
@@ -42,6 +43,7 @@ export class PaginationComponent implements OnInit {
     if(page >= 1 && page <= this.pages.length && page !== this.currentPage) {
       this.currentPage = page;
       this.paginationService.changePage(page);
+      this.pageChanged.emit(this.currentPage);
     }
   }
 }

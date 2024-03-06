@@ -71,7 +71,6 @@ export class SideMenuComponent implements OnInit, OnDestroy {
     this.selectedDate = dateStr;
     this.reservationSub = this.reservationService.loadReservations().subscribe(reservations => {
       this.allReservations = reservations;
-      console.log("usao");
     });
     this.changeList();
   }

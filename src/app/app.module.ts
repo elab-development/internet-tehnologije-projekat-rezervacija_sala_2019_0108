@@ -15,7 +15,6 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
-import { environment } from '../environments/environment.development';
 import { AuthComponent } from './auth/auth/auth.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -23,13 +22,15 @@ import { LoadingSpinnerComponent } from './styles/loading-spinner/loading-spinne
 import { CreateRoomComponent } from './components/create-room/create-room.component';
 import { AuthGuard } from './auth/auth/authGuard/authGuard';
 import { PaginationComponent } from './footer/pagination/pagination.component';
+import { LoggedOutGuard } from './auth/auth/loggedOutGuard/loggedOuthGuard';
+import { ReservationComponent } from './components/reservation/reservation.component';
 
 const routes: Routes = [
   
   { path: 'rooms/:id', component: RoomDetailComponent },
   { path: 'createRoom', component: CreateRoomComponent, canActivate: [AuthGuard] },
-  { path: 'reserve', component: ReserveComponent },
-  { path: 'login', component: AuthComponent },
+  { path: 'reserve', component: ReserveComponent},
+  { path: 'login', component: AuthComponent, canActivate: [LoggedOutGuard]  },
   { path: 'rooms', component: RoomsComponent },
   { path: '', redirectTo: '/rooms', pathMatch: 'full' },
   { path: '**', redirectTo: '/rooms', pathMatch: 'full' }
@@ -49,7 +50,8 @@ const routes: Routes = [
     AuthComponent,
     LoadingSpinnerComponent,
     CreateRoomComponent,
-    PaginationComponent
+    PaginationComponent,
+    ReservationComponent
   ],
   imports: [
     RouterModule.forRoot(routes),

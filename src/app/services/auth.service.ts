@@ -98,6 +98,11 @@ export class AuthService {
     const currentUser = this.user.value;
     return !!currentUser && !!currentUser.token;
   }
+
+  isUserAdmin(): boolean{
+    const currentUser = this.user.value;
+    return currentUser.email === "admin@gmail.com";
+  }
 }
 
 export interface AuthResponseData {

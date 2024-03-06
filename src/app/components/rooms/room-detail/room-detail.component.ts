@@ -24,8 +24,8 @@ export class RoomDetailComponent implements OnInit, OnDestroy {
   public room?: Room;
   private roomSub!: Subscription;
   private userSub!: Subscription;
-  private reservationSub!: Subscription;
   private currentUser: User;
+  private reservationSub!: Subscription;
   showDialog = false;
   isAuthenticated = false;
 

@@ -30,6 +30,8 @@ export class RoomListComponent implements OnInit {
   }
 
   changePage(page: number){
+    console.log(page);
+
     this.roomsSubscription = this.roomService.getRooms(page).subscribe(rooms => {
       this.rooms = rooms;
     });

@@ -12,7 +12,7 @@ export class AuthGuardService implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
     return this.authService.user.pipe(map(
-      user =>  !!user
+      user =>  user.email === "admin@gmail.com"
     ));
   }
 }
