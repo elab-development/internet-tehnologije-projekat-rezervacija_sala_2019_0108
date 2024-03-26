@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { RoomService } from '../../services/room.service';
 import { RoomListComponent } from './room-list/room-list.component';
 import { PaginationService } from '../../services/pagination.service';
@@ -9,12 +9,11 @@ import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-rooms',
   templateUrl: './rooms.component.html',
-  styleUrl: './rooms.component.css'
+  styleUrls: ['./rooms.component.css'] // Ovde je bila greška: styleUrl treba da bude styleUrls
 })
-export class RoomsComponent implements OnInit {
+export class RoomsComponent implements OnInit, AfterViewInit { // Dodat AfterViewInit interface
 
-  @ViewChild(RoomListComponent) roomListComponent!: RoomListComponent;
-
+  @ViewChild(RoomListComponent, { static: false }) roomListComponent!: RoomListComponent; // Dodato { static: false }
 
   currentPage: number = 1;
   itemsPerPage: number = 6;
@@ -22,16 +21,18 @@ export class RoomsComponent implements OnInit {
   private userSub!: Subscription;
   isAuthenticated = false;
   isAdmin = false;
-  private currentUser: User;
+  private currentUser?: User; // Dodat "?" da označimo da može biti undefined
 
   constructor(private roomService: RoomService,
-    private paginationService: PaginationService,
-    private authService: AuthService) { }
+              private paginationService: PaginationService,
+              private authService: AuthService,
+              private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.roomService.loadRooms().subscribe(data => {
       this.totalItems = this.roomService.numberOfRooms;
     });
+
     this.userSub = this.authService.user.subscribe(user => {
       this.isAuthenticated = !!user;
       if (user) { 
@@ -39,17 +40,27 @@ export class RoomsComponent implements OnInit {
         this.currentUser = user;
       } else {
         this.isAdmin = false;
-        this.currentUser = null; 
+        this.currentUser = undefined; // Ovde smo promenili sa null na undefined
       }
-      console.log(this.isAdmin);
     });
-    
+  }
+
+  ngAfterViewInit(): void {
+    this.cdr.detectChanges(); 
   }
 
   onPageChange(newPage: number): void {
     this.currentPage = newPage;
     this.paginationService.changePage(newPage);
-    this.roomListComponent.changePage(newPage);
+    if (this.roomListComponent) { // Dodata provera da li roomListComponent postoji
+      this.roomListComponent.changePage(newPage);
+    }
+    this.cdr.detectChanges();
   }
 
+  ngOnDestroy(): void { // Dodato da se oslobode resursi
+    if (this.userSub) {
+      this.userSub.unsubscribe();
+    }
+  }
 }

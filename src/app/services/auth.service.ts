@@ -32,7 +32,7 @@ export class AuthService {
           returnSecureToken: true
         }).pipe(tap(
           resData => {
-            this.handleAuthentication(resData.email, resData.localId, resData.idToken.trim(), +resData.expiresIn);
+            this.handleAuthentication(resData.email, resData.localId, resData.idToken.trim(), +resData.expiresIn, resData.localId);
           }
         ))
       ;
@@ -46,7 +46,7 @@ export class AuthService {
         returnSecureToken: true
       }).pipe(tap(
         resData => {
-          this.handleAuthentication(resData.email, resData.localId, resData.idToken, +resData.expiresIn);
+          this.handleAuthentication(resData.email, resData.localId, resData.idToken, +resData.expiresIn, resData.localId);
         }
       )
       );
@@ -85,9 +85,10 @@ export class AuthService {
   }
 
 
-  private handleAuthentication(email: string, userId: string, token: string, expiresIn: number) {
+  private handleAuthentication(email: string, userId: string, token: string, expiresIn: number, localId: string) {
     let expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
     const user = new User(userId, email, token, expirationDate);
+    console.log(token);
     this.tokenSubject.next(token);
     this.user.next(user);
     localStorage.setItem('userData', JSON.stringify(user));

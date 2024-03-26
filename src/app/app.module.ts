@@ -28,6 +28,7 @@ import { ReservationComponent } from './components/reservation/reservation.compo
 const routes: Routes = [
   
   { path: 'rooms/:id', component: RoomDetailComponent },
+  { path: 'reservations', component: ReservationComponent },
   { path: 'createRoom', component: CreateRoomComponent, canActivate: [AuthGuard] },
   { path: 'reserve', component: ReserveComponent},
   { path: 'login', component: AuthComponent, canActivate: [LoggedOutGuard]  },

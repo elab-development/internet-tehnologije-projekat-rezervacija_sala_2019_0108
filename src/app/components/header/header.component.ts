@@ -30,7 +30,6 @@ export class HeaderComponent implements OnInit, OnDestroy{
         this.isAdmin = false;
         this.currentUser = null; 
       }
-      console.log(this.isAdmin);
     });
     
   }

@@ -47,7 +47,6 @@ export class CalendarComponent implements OnInit {
         return reservation.date;
       }) || [];
       this.reservedDates = this.convertDatesToStrings(datumi);
-      console.log(this.reservedDates);
     }
     this.generateCalendar();
   }

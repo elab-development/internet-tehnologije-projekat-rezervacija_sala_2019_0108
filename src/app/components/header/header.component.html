@@ -8,6 +8,7 @@
                 </li>
                 <li class="nav-item">
                     <a *ngIf="isAdmin" class="nav-link" routerLink="/createRoom" >Create Room</a>
+                    <a *ngIf="!isAdmin && isAuthenticated" class="nav-link" routerLink="/reservations" >My Reservations</a>
                 </li>
             </ul>
             <ul class="navbar-nav ms-auto"> <!-- Ovde koristimo ms-auto za Bootstrap 5 ili ml-auto za Bootstrap 4 -->

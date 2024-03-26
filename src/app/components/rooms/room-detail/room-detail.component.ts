@@ -46,7 +46,6 @@ export class RoomDetailComponent implements OnInit, OnDestroy {
           }
           this.room = room;
           this.reservationSub = this.reservationService.loadReservationsForRoom(this.room.id).subscribe(reservations => {
-            console.log(reservations);
             this.calendarComponent.setRoomsReservations(reservations);
           });
         }
@@ -56,6 +55,7 @@ export class RoomDetailComponent implements OnInit, OnDestroy {
         this.currentUser = user;
       });
     }
+
     
 
   ngOnDestroy(): void {

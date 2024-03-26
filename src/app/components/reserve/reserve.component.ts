@@ -20,7 +20,11 @@ export class ReserveComponent {
     this.dialogRef.close();
   }
   onConfirmClick(){
+    console.log(this.data.reservation);
     this.reservationService.addReservation(this.data.reservation);
+    this.dialogRef.close();
+    
+    
   }
 
 

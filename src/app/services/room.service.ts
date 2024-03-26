@@ -1,8 +1,8 @@
-import { BehaviorSubject, Observable } from "rxjs";
+import { BehaviorSubject, Observable, throwError } from "rxjs";
 import { Room } from "../models/room";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable, OnInit } from "@angular/core";
-import { map, tap } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 import { AuthService } from "./auth.service";
 import { PaginationService } from "./pagination.service";
 
@@ -58,22 +58,32 @@ export class RoomService implements OnInit {
     this.roomsSubject.next(rooms);
     this.updateNumberOfPages(rooms.length);
   }
-
   addRoom(room: Room): void {
     if (this.authService.isUserAdmin()) { 
       this.authService.token$.subscribe(token => {
+        console.log(token);
         const headers = {
           'Authorization': `Bearer ${token}`
         };
-
+  
         this.httpClient.post<Room>('http://127.0.0.1:8000/api/rooms', room, { headers })
+          .pipe(
+            catchError((error) => {
+              // Ovde možete obraditi grešku, na primer, prikazati poruku korisniku
+              console.error('Došlo je do greške prilikom dodavanja sobe:', error);
+              // Možete takođe obavestiti korisnika putem UI, na primer, koristeći neki servis za obaveštavanje
+              // this.notificationService.showError('Greška prilikom dodavanja sobe.');
+  
+              // Vraćamo Observable sa greškom kako bi lanac ostao konsistentan
+              return throwError(error);
+            })
+          )
           .subscribe(() => {
             this.loadRooms();
           });
       });
     } 
   }
-
   private updateNumberOfPages(totalItems: number): void {
     const newNumberOfPages = Math.ceil(totalItems / 6);
     this.numberOfPagesSubject.next(newNumberOfPages);

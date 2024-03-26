@@ -1,0 +1,30 @@
+.reservation-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.reservation-item {
+    display: flex;
+    align-items: flex-start;
+    background-color: #fff;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.room-image {
+    width: 350px;
+    height: auto;
+    margin-right: 20px;
+}
+
+.room-details {
+    padding: 20px;
+}
+
+.room-details h2 {
+    margin-top: 0;
+}
+
+.room-details p {
+    margin: 5px 0;
+}

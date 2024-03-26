@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
-      if (event.url === '/createRoom' || /\/rooms\/\d+/.test(event.url)) {
+      if (event.url === '/createRoom' || /\/rooms\/\d+/.test(event.url) || event.url === '/reservations') {
         this.sideMenu = false;
       }
       else{
