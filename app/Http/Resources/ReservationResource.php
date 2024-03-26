@@ -13,7 +13,6 @@ class ReservationResource extends JsonResource
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
 
-    public static $wrap = 'Reservation';
     public function toArray($request)
     {
         //return parent::toArray($request);
@@ -21,8 +20,7 @@ class ReservationResource extends JsonResource
             'id' => $this->id,
             'user' => new UserResource($this->user),
             'room' => new RoomResource($this->room),
-            'date' => $this->reserved_date,
-            'status' => $this->status
+            'date' => $this->reserved_date
         ];
     }
 }

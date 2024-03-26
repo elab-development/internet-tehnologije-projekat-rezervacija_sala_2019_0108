@@ -33,8 +33,8 @@ class DatabaseSeeder extends Seeder
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
 
-        User::factory()->count(10)->create();
-        Room::factory()->count(5)->create();
-        Reservation::factory()->count(15)->create();
+        //User::factory()->count(10)->create();
+        Room::factory()->count(15)->create();
+       // Reservation::factory()->count(15)->create();
     }
 }

@@ -12,7 +12,6 @@ class ReservationCollection extends ResourceCollection
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
-    public static $wrap = 'Reservations';
     public function toArray($request)
     {
         return parent::toArray($request);

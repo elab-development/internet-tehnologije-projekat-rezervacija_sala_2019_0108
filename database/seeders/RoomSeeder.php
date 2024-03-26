@@ -18,9 +18,8 @@ class RoomSeeder extends Seeder
         Room::create([
             'name' => 'Konferencijska Sala',
             'capacity' => 50,
-            'amenities' => 'projektor, wi-fi'
+            'equipment' => 'Projector, Sound System'
         ]);
 
-        // Dodajte još soba po želji
     }
 }

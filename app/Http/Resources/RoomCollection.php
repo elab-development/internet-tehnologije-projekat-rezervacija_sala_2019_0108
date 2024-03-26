@@ -13,7 +13,6 @@ class RoomCollection extends ResourceCollection
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
     
-     public static $wrap = 'Rooms';
      public function toArray($request)
     {
         return parent::toArray($request);

@@ -12,15 +12,20 @@ class RoomResource extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
-    public static $wrap = 'Room';
+
     public function toArray($request)
     {
-        //return parent::toArray($request);
         return [
-            'id' => $this->resource->id,
-            'name' => $this->resource->name,
-            'capacity' => $this->resource->capacity,
-            'amenities' => $this->resource->amenities
+            'id' => $this->id,
+            'name' => $this->name,
+            'type' => $this->type,
+            'capacity' => $this->capacity,
+            'location' => $this->location,
+            'equipment' => $this->equipment, 
+            'squareFootage' => $this->squareFootage,
+            'price' => $this->price,
+            'description' => $this->description,
+            'imageUrl' => $this->imageUrl,
         ];
     }
 }

@@ -18,8 +18,7 @@ class ReservationSeeder extends Seeder
         Reservation::create([
             'user_id' => 1,
             'room_id' => 1,
-            'reserved_date' => now(),
-            'status' => 'pending'
+            'reserved_date' => now()
         ]);
 
     }

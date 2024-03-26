@@ -13,7 +13,10 @@ return [
     | a conventional file to locate the various service credentials.
     |
     */
-
+    'firebase' => [
+        'credentials' => env('FIREBASE_CREDENTIALS_PATH', base_path('storage/app/firebase/authpage-8dde5-firebase-adminsdk-il9f6-f6c7f5f1df.json')),
+    ],
+    
     'mailgun' => [
         'domain' => env('MAILGUN_DOMAIN'),
         'secret' => env('MAILGUN_SECRET'),

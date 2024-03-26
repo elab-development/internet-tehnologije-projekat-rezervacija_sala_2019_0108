@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->id();
+            $table->string('id')->primary(); // Promenite definiciju kolone id da bude string i primarni ključ
             $table->string('name');
             $table->string('email');
             $table->timestamp('email_verified_at')->nullable();
@@ -24,13 +24,7 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('users');
-    }
-};
+    }};

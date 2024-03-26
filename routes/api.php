@@ -21,33 +21,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-Route::apiResource('users', UserController::class);
-Route::apiResource('rooms', RoomController::class);
-//Route::apiResource('reservations', ReservationController::class);
-Route::post('reservations/cancel/{reservation}', [ReservationController::class, 'cancelReservation']);
-Route::get('/users/{id}/reservations', [UserReservationController::class, 'index'])->name('users.reservations.index');
-Route::get('/rooms/{id}/reservations', [RoomReservationController::class, 'index'])->name('rooms.reservations.index');
-//Route::resource('users.reservations', UserReservationController::class)->only('index'); Drugi nacin
-Route::post('/register',[AuthController::class,'register']);
-Route::post('/login',[AuthController::class,'login']);
-
-Route::group(['middleware' => ['auth:sanctum']], function () {
+Route::middleware('firebase.auth')->group(function () {
     Route::get('/profile', function(Request $request) {
         return auth()->user();
     });
-    Route::resource('reservations', ReservationController::class)->only(['update','store','destroy']);
+    Route::apiResource('reservations', ReservationController::class)->except(['index']);
+    Route::apiResource('rooms', RoomController::class)->only('store');
 
-    // API route for logout user
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
-Route::resource('reservations', ReservationController::class)->only(['index']);
+// Javne rute
 
-Route::get('/rooms', [RoomController::class, 'index']);
-//Eksport u pdf
+Route::apiResource('rooms', RoomController::class)->only('index');
+Route::apiResource('users', UserController::class);
+Route::apiResource('reservations', ReservationController::class)->only('index');
+Route::get('/users/{id}/reservations', [UserReservationController::class, 'index']);
+Route::get('/rooms/{id}/reservations', [RoomReservationController::class, 'index']);
+//Route::post('/register',[AuthController::class,'register']);
+//Route::post('/login',[AuthController::class,'login']);
 Route::get('/reservation/{reservation}/pdf', [ReservationController::class, 'exportToPdf']);
-
-

@@ -18,23 +18,23 @@ class RoomController extends Controller
     public function index(Request $request)
     {
         $query = Room::query();
-    
+
         // Filtriranje po kapacitetu sobe
-        if ($request->has('capacity')) {
+       /* if ($request->has('capacity')) {
             $capacity = $request->input('capacity');
             $query->where('capacity', '>=', $capacity);
         }
-    
-        // Filtriranje po sadržajima (amenities)
-        if ($request->has('amenity')) {
-            $amenity = $request->input('amenity');
-            $query->where('amenities', 'like', '%' . $amenity . '%');
-        }
-    
-        // Paginacija
-        $perPage = $request->input('per_page', 3);
-        $rooms = $query->paginate($perPage);
 
+        // Filtriranje po sadržajima (equipment)
+        if ($request->has('equipment')) {
+            $equipment = $request->input('equipment');
+            $query->where('equipment', 'like', '%' . $equipment . '%');
+        }
+
+        // Paginacija
+        $perPage = $request->input('per_page', 6);
+        $rooms = $query->paginate($perPage);*/
+        $rooms = Room::all();
         //return response()->json($rooms);
         return new RoomCollection($rooms);
     }
@@ -46,15 +46,23 @@ class RoomController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|max:255',
+            'name' => 'required|string|max:255',
+            'type' => 'required|string|max:255',
             'capacity' => 'required|integer',
-            'amenities' => 'nullable|string'
+            'location' => 'required|string|max:255',
+            'equipment' => 'array',
+            'squareFootage' => 'nullable|integer',
+            'price' => 'required|numeric',
+            'description' => 'nullable|string',
+            'imageUrl' => 'nullable|string',
         ]);
 
         $room = Room::create($validated);
+
         return response()->json($room, 201);
     }
 
@@ -82,7 +90,7 @@ class RoomController extends Controller
         $validated = $request->validate([
             'name' => 'required|max:255',
             'capacity' => 'required|integer',
-            'amenities' => 'nullable|string'
+            'equipment' => 'nullable|string'
         ]);
 
         $room = Room::findOrFail($id);

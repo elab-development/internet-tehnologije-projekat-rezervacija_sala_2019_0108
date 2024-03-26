@@ -14,10 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::table('reservations', function (Blueprint $table) {
-            $table->unsignedBigInteger('user_id');
+            $table->string('user_id');
             $table->unsignedBigInteger('room_id');
          
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('room_id')->references('id')->on('rooms')->onDelete('cascade');
         });
         
@@ -32,7 +31,6 @@ return new class extends Migration
     public function down()
     {
         Schema::table('reservations', function (Blueprint $table) {
-            $table->dropForeign(['user_id']);
             $table->dropForeign(['room_id']);
 
             $table->dropColumn('user_id');

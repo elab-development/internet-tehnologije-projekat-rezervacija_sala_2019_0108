@@ -9,22 +9,18 @@ class Reservation extends Model
 {
     use HasFactory;
 
-    const STATUS_PENDING = 'pending';
-    const STATUS_CONFIRMED = 'confirmed';
-    const STATUS_CANCELLED = 'cancelled';
 
     protected $fillable = [
         'user_id', 
         'room_id', 
-        'reserved_date',
-        'status'
+        'reserved_date'
     ];
 
-    public function user()
+ /*   public function user()
     {
         return $this->belongsTo(User::class);
     }
-
+*/
     public function room()
     {
         return $this->belongsTo(Room::class);

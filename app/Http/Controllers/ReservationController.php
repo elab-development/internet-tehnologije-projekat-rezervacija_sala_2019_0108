@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Log;
 use App\Http\Resources\ReservationCollection;
 use App\Http\Resources\ReservationResource;
 use App\Models\Reservation;
@@ -30,27 +31,26 @@ class ReservationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    // U ReservationController.php
+
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        Log::info('Pozvan store metod u ReservationController-u sa podacima: ', $request->all());
+    
+        $validatedData = $request->validate([
+            // Validacija podataka
             'room_id' => 'required|exists:rooms,id',
+            'user_id' => 'required',
             'reserved_date' => 'required|date',
-            'status' => 'required|in:pending,confirmed,cancelled'
+            // Dodajte ostale potrebne validacije
         ]);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors());
-        }
-
-        $reservation = Reservation::create([
-            'user_id' => Auth::user()->id,
-            'room_id' => $request->room_id,
-            'reserved_date' => $request->reserved_date,
-            'status' => $request->status
-        ]);
-
-        return response()->json(['Reservation is created successfully.', new ReservationResource($reservation)]);
+    
+        $reservation = Reservation::create($validatedData);
+    
+        return response()->json($reservation, 201); // 201 Created
     }
+    
+
 
     /**
      * Display the specified resource.
@@ -76,7 +76,6 @@ class ReservationController extends Controller
         $validator = Validator::make($request->all(), [
             'room_id' => 'required|exists:rooms,id',
             'reserved_date' => 'required|date',
-            'status' => 'required|in:pending,confirmed,cancelled'
         ]);
 
         if ($validator->fails()) {
@@ -85,7 +84,6 @@ class ReservationController extends Controller
 
         $reservation->room_id = $request->room_id;
         $reservation->reserved_date = $request->reserved_date;
-        $reservation->status = $request->status;
 
         $reservation->save();
 
@@ -110,11 +108,6 @@ class ReservationController extends Controller
     {
         $reservation = Reservation::findOrFail($id);
 
-        if ($reservation->status == 'cancelled') {
-            return response()->json(['message' => 'Reservation is already cancelled'], 400);
-        }
-
-        $reservation->status = 'cancelled';
         $reservation->save();
 
         return response()->json(['message' => 'Reservation cancelled successfully']);
@@ -136,7 +129,6 @@ class ReservationController extends Controller
                 <p>Korisnik: {$reservation->user_id}</p>
                 <p>Soba: {$reservation->room_id}</p>
                 <p>Datum Rezervacije: {$reservation->reserved_date}</p>
-                <p>Status: {$reservation->status}</p>
             </body>
         </html>
         ";
