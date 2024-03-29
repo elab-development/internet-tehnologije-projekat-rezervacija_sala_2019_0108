@@ -1,25 +1,16 @@
 <div class="reservation-list">
-    <div class="reservation-item">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2txP24J7E7sL8DhiWQKsRm2Rj3C5FX9CASNn_egFr6g&s" alt="Soba" class="room-image">
+    <div *ngFor="let reservation of reservations" class="reservation-item">
+        <img src="{{reservation.room.imageUrl}}" alt="Soba" class="room-image">
         <div class="room-details">
-            <h2>Ime Sobe - Standardna</h2>
-            <p>Lokacija: Novi Sad</p>
-            <p>Kapacitet: 4 osobe</p>
-            <p>Kvadratura: 30 m<sup>2</sup></p>
-            <p>Cena po danu: $100</p>
-            <p>Datum rezervacije: 25. oktobar 2023.</p>
+            <h2>Name: {{reservation.room.name}}</h2>
+            <p>Location: {{reservation.room.location}}</p>
+            <p>Capacity: {{reservation.room.capacity}}</p>
+            <p>Square Footage: {{reservation.room.squareFootage}}<sup>2</sup></p>
+            <p>Room Price: {{reservation.room.price}}</p>
+            <p>Date: {{reservation.date}}</p>
         </div>
-    </div>
-    <!-- Ponovite .reservation-item za svaku dodatnu rezervaciju -->
-    <div class="reservation-item">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2txP24J7E7sL8DhiWQKsRm2Rj3C5FX9CASNn_egFr6g&s" alt="Soba" class="room-image">
-        <div class="room-details">
-            <h2>Lux Apartman - Lux</h2>
-            <p>Lokacija: Beograd</p>
-            <p>Kapacitet: 2 osobe</p>
-            <p>Kvadratura: 50 m<sup>2</sup></p>
-            <p>Cena po danu: $200</p>
-            <p>Datum rezervacije: 30. oktobar 2023.</p>
+        <div>
+            <button (click)="deleteReservation(reservation.id)" class="delete-button">Delete</button>
         </div>
     </div>
 </div>

@@ -24,11 +24,12 @@ import { AuthGuard } from './auth/auth/authGuard/authGuard';
 import { PaginationComponent } from './footer/pagination/pagination.component';
 import { LoggedOutGuard } from './auth/auth/loggedOutGuard/loggedOuthGuard';
 import { ReservationComponent } from './components/reservation/reservation.component';
+import { LoggedInGuard } from './auth/auth/loggedInGuard/logged-in-guard.guard';
 
 const routes: Routes = [
   
   { path: 'rooms/:id', component: RoomDetailComponent },
-  { path: 'reservations', component: ReservationComponent },
+  { path: 'reservations', component: ReservationComponent, canActivate: [LoggedInGuard] },
   { path: 'createRoom', component: CreateRoomComponent, canActivate: [AuthGuard] },
   { path: 'reserve', component: ReserveComponent},
   { path: 'login', component: AuthComponent, canActivate: [LoggedOutGuard]  },

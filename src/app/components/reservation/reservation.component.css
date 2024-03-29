@@ -7,12 +7,12 @@
     display: flex;
     align-items: flex-start;
     background-color: #fff;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .room-image {
-    width: 350px;
+    width: 300px;
     height: auto;
     margin-right: 20px;
 }
@@ -27,4 +27,39 @@
 
 .room-details p {
     margin: 5px 0;
+}
+.reservation-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.reservation-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.room-details {
+    flex: 1;
+}
+
+
+.delete-button {
+    padding: 10px 20px;
+    background-color: red;
+    width: 120px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 20px;
+    margin-right: 50px;
+}
+
+.delete-button:hover {
+    background-color: darkred;
 }

@@ -12,6 +12,7 @@ import { AuthService } from './auth.service';
 export class ReservationserviceService {
 
 
+
   private reservationSubject = new BehaviorSubject<Reservation[]>([]);
   public reservations$ = this.reservationSubject.asObservable();
 
@@ -19,14 +20,6 @@ export class ReservationserviceService {
     this.loadReservations();
   }
 
-  loadReservationsForUser(userId: number): Observable<Reservation[]> {
-    return this.httpClient.get<{ data: Reservation[] }>('http://127.0.0.1:8000/api/users/' + userId + '/reservations').pipe(
-      map(response => response.data),
-      tap(reservations => {
-        this.reservationSubject.next(reservations);
-      })
-    );
-  }
 
   loadReservations(): Observable<Reservation[]> {
     return this.httpClient.get<{ data: Reservation[] }>('http://127.0.0.1:8000/api/reservations').pipe(
@@ -49,16 +42,33 @@ export class ReservationserviceService {
       })
     );
   }
+  loadReservationsForUser(): Observable<Reservation[]> {
+    let userId ;
+    this.authService.currentUser.subscribe(user => {
+      userId = user.id;
+    });
+    return this.httpClient.get<{ data: Reservation[] }>('http://127.0.0.1:8000/api/users/' + userId + '/reservations').pipe(
+      map(response => response.data),
+      tap(reservations => {
+        this.reservationSubject.next(reservations);
+      }),
+      catchError(error => {
+        console.error('Došlo je do greške pri učitavanju rezervacija', error);
+        this.reservationSubject.next([]); // Postavljanje reservationSubject na prazan niz
+        return of([]); // Vraćanje Observable-a koji emituje prazan niz, kako bi se osiguralo da lanac ostane funkcionalan
+      })
+    );
+  }
+
+  
 
   addReservation(reservation: Reservation): void {
     this.authService.token$.subscribe(token => {
-      console.log(token);
       const headers = {
         'Authorization': `Bearer ${token}`
       };
 
       const laravelObject = reservation.toLaravelObject();
-      console.log(laravelObject);
 
       this.httpClient.post<Reservation>('http://127.0.0.1:8000/api/reservations', laravelObject, { headers })
         .subscribe(
@@ -68,6 +78,25 @@ export class ReservationserviceService {
           },
           error => {
             console.error("Greška prilikom dodavanja rezervacije", error.error);
+          }
+        );
+    });
+  }
+
+  deleteReservation(reservationId: number): void {
+    this.authService.token$.subscribe(token => {
+      const headers = {
+        'Authorization': `Bearer ${token}`
+      };
+  
+      this.httpClient.delete(`http://127.0.0.1:8000/api/reservations/${reservationId}`, { headers })
+        .subscribe(
+          () => {
+            alert("Uspesno obrisana rezervacija");
+            window.location.reload();
+          },
+          error => {
+            console.error("Greška prilikom brisanja rezervacije", error.error);
           }
         );
     });
