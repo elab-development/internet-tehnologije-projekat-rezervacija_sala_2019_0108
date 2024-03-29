@@ -28,6 +28,7 @@ Route::middleware('firebase.auth')->group(function () {
     Route::apiResource('reservations', ReservationController::class)->except(['index']);
     Route::apiResource('rooms', RoomController::class)->only('store');
 
+    Route::get('/users/{id}/reservations', [UserReservationController::class, 'index']);
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
