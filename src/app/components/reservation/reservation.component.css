@@ -48,18 +48,28 @@
 }
 
 
-.delete-button {
+.delete-button, .download-button {
     padding: 10px 20px;
-    background-color: red;
-    width: 120px;
-    color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin-left: 20px;
-    margin-right: 50px;
+    margin-left: 10px;
+}
+
+.delete-button {
+    background-color: red;
+    color: white;
 }
 
 .delete-button:hover {
     background-color: darkred;
+}
+
+.download-button {
+    background-color: blue;
+    color: white;
+}
+
+.download-button:hover {
+    background-color: darkblue;
 }

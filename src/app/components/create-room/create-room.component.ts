@@ -27,7 +27,7 @@ export class CreateRoomComponent {
       formValue.location,
       [
         formValue.equipmentProjector ? 'Projector' : null,
-        formValue.equipmentSoundEquipment ? 'Sound Equipment' : null,
+        formValue.equipmentSoundEquipment ? 'Video System' : null,
         formValue.equipmentWhiteboard ? 'Whiteboard' : null,
         formValue.equipmentSoundSystem ? 'Sound System' : null,
       ].filter(e => e !== null), 

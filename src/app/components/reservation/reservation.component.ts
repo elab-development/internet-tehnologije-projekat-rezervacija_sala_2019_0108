@@ -20,12 +20,17 @@ export class ReservationComponent implements OnInit{
   ngOnInit(): void {
     this.reservationService.loadReservationsForUser().subscribe(data =>{
       this.reservations = data;
-      console.log(this.reservations);
     })
   }
 
   deleteReservation(reservationId){
     this.reservationService.deleteReservation(reservationId);
+    alert("You have deleted a reservation");
+  }
+  downloadReservation(reservationId){
+    this.reservationService.downloadReservation(reservationId);
+    alert("You have downloaded a reservation");
+
   }
 
 }

@@ -92,11 +92,34 @@ export class ReservationserviceService {
       this.httpClient.delete(`http://127.0.0.1:8000/api/reservations/${reservationId}`, { headers })
         .subscribe(
           () => {
-            alert("Uspesno obrisana rezervacija");
             window.location.reload();
           },
           error => {
             console.error("Greška prilikom brisanja rezervacije", error.error);
+          }
+        );
+    });
+  }
+  downloadReservation(reservationId: number): void {
+    this.authService.token$.subscribe(token => {
+      const headers = {
+        'Authorization': `Bearer ${token}`
+      };
+  
+      this.httpClient.get(`http://127.0.0.1:8000/api/reservation/${reservationId}/pdf`, { headers, responseType: 'blob' })
+        .subscribe(
+          (response) => {
+            const blob = new Blob([response], { type: 'application/pdf' });
+            const downloadURL = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = downloadURL;
+            link.download = `reservation-${reservationId}.pdf`;
+            link.click();
+  
+            window.URL.revokeObjectURL(downloadURL);
+          },
+          error => {
+            console.error("Greška prilikom preuzimanja rezervacije", error.error);
           }
         );
     });
