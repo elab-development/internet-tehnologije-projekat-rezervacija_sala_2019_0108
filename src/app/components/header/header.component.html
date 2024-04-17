@@ -11,7 +11,7 @@
                     <a *ngIf="!isAdmin && isAuthenticated" class="nav-link" routerLink="/reservations" >My Reservations</a>
                 </li>
             </ul>
-            <ul class="navbar-nav ms-auto"> <!-- Ovde koristimo ms-auto za Bootstrap 5 ili ml-auto za Bootstrap 4 -->
+            <ul class="navbar-nav ms-auto"> 
                 <li *ngIf="!isAuthenticated" class="nav-item">
                     <a class="btn btn-dark" style="width: 100px;" routerLink="/login">Login</a>
                 </li>

@@ -3,7 +3,7 @@
         <div style="width: 700px;">
             <img src="{{ room.imageUrl }}" class="detail-img" style="width: 700px; margin-bottom: 20px;">
 
-            <h4>{{ room.name }} - {{room.type}}</h4>
+            <h4 appHighlight highlightColor="lightblue" defaultColor="white">{{ room.name }} - {{room.type}}</h4>
             <h5>Location: {{room.location}}</h5>
             <h5>Square Footage: {{room.squareFootage}} | Capacity: {{room.capacity}}</h5>
             <h5>Daily Price: {{room.price | currency: 'USD'}}</h5>

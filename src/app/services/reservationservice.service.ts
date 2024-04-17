@@ -37,8 +37,8 @@ export class ReservationserviceService {
       }),
       catchError(error => {
         console.error('Došlo je do greške pri učitavanju rezervacija', error);
-        this.reservationSubject.next([]); // Postavljanje reservationSubject na prazan niz
-        return of([]); // Vraćanje Observable-a koji emituje prazan niz, kako bi se osiguralo da lanac ostane funkcionalan
+        this.reservationSubject.next([]); 
+        return of([]); 
       })
     );
   }
@@ -54,8 +54,8 @@ export class ReservationserviceService {
       }),
       catchError(error => {
         console.error('Došlo je do greške pri učitavanju rezervacija', error);
-        this.reservationSubject.next([]); // Postavljanje reservationSubject na prazan niz
-        return of([]); // Vraćanje Observable-a koji emituje prazan niz, kako bi se osiguralo da lanac ostane funkcionalan
+        this.reservationSubject.next([]); 
+        return of([]); 
       })
     );
   }

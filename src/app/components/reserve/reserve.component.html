@@ -12,7 +12,7 @@
             </mat-form-field>
             <mat-form-field appearance="fill">
                 <mat-label>Date: </mat-label>
-                <input matInput [value]="data.reservation.date | date: 'shortDate'" readonly>
+                <input matInput [value]="data.reservation.date | customDate:'medium'" readonly>
             </mat-form-field>
             <mat-form-field appearance="fill">
                 <mat-label>Email: </mat-label>

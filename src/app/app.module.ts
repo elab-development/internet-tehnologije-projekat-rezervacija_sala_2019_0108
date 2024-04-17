@@ -25,6 +25,8 @@ import { PaginationComponent } from './footer/pagination/pagination.component';
 import { LoggedOutGuard } from './auth/auth/loggedOutGuard/loggedOuthGuard';
 import { ReservationComponent } from './components/reservation/reservation.component';
 import { LoggedInGuard } from './auth/auth/loggedInGuard/logged-in-guard.guard';
+import { CustomDatePipe } from './pipes/custom-date.pipe';
+import { HighlightDirective } from './directives/highlight.directive';
 
 const routes: Routes = [
   
@@ -53,7 +55,9 @@ const routes: Routes = [
     LoadingSpinnerComponent,
     CreateRoomComponent,
     PaginationComponent,
-    ReservationComponent
+    ReservationComponent,
+    CustomDatePipe,
+    HighlightDirective
   ],
   imports: [
     RouterModule.forRoot(routes),
