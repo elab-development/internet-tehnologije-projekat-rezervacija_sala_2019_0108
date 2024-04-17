@@ -25,20 +25,21 @@ Route::middleware('firebase.auth')->group(function () {
     Route::get('/profile', function(Request $request) {
         return auth()->user();
     });
-    Route::apiResource('reservations', ReservationController::class)->except(['index']);
     Route::apiResource('rooms', RoomController::class)->only('store');
 
     Route::get('/users/{id}/reservations', [UserReservationController::class, 'index']);
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/reservation/{reservation}/pdf', [ReservationController::class, 'exportToPdf']);
 });
 
 // Javne rute
+Route::apiResource('reservations', ReservationController::class)->except(['index']);
 
-Route::apiResource('rooms', RoomController::class)->only('index');
+Route::apiResource('rooms', RoomController::class);
+Route::get('/rooms/{id}', [RoomController::class, 'show']);
 Route::apiResource('users', UserController::class);
 Route::apiResource('reservations', ReservationController::class)->only('index');
 Route::get('/users/{id}/reservations', [UserReservationController::class, 'index']);
 Route::get('/rooms/{id}/reservations', [RoomReservationController::class, 'index']);
 //Route::post('/register',[AuthController::class,'register']);
 //Route::post('/login',[AuthController::class,'login']);
-Route::get('/reservation/{reservation}/pdf', [ReservationController::class, 'exportToPdf']);

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
@@ -33,19 +34,30 @@ class AuthController extends Controller
         return response()->json(['data'=>$user, 'access_token'=>$token,'token_type'=>'Bearer']);
 
     }
-    function login(Request $request) {
+    public function login(Request $request)
+    {
+        $client = new Client(['base_uri' => 'https://identitytoolkit.googleapis.com/v1/']);
         
-        if(!Auth::attempt($request->only('email','password'))){
-            return response()->json(['message'=>'Unauthorized'],401);
+        try {
+            $response = $client->post('accounts:signInWithPassword', [
+                'json' => [
+                    'email' => $request->email,
+                    'password' => $request->password,
+                    'returnSecureToken' => true
+                ],
+                'query' => [
+                    'key' => env('FIREBASE_API_KEY')
+                ]
+            ]);
+
+            $body = json_decode($response->getBody()->getContents(), true);
+
+            // Obrada podataka
+            $this->handleAuthentication($body['email'], $body['localId'], $body['idToken'], $body['expiresIn'], $body['localId']);
+
+            return response()->json($body);
+        } catch (\GuzzleHttp\Exception\GuzzleException $e) {
+            return response()->json(['error' => 'Authentication failed'], 401);
         }
-        $user = User::where('email', $request['email'])->firstOrFail();
-
-        $token = $user->createToken('auth_token')->plainTextToken;
-        return response()->json(['message'=>'Hi '.$user->name.', welcome to home page :-)', 'access_token'=>$token,'token_type'=>'Bearer']);
-
-    }
-    function logout() {
-        auth()->user()->tokens()->delete();
-        return ['message'=>'You have successfully logged out!'];
     }
 }

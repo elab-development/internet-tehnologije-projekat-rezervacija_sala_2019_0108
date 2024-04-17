@@ -49,12 +49,13 @@ class RoomController extends Controller
 
     public function store(Request $request)
     {
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'type' => 'required|string|max:255',
             'capacity' => 'required|integer',
             'location' => 'required|string|max:255',
-            'equipment' => 'array',
+            'equipment' => 'required|string',
             'squareFootage' => 'nullable|integer',
             'price' => 'required|numeric',
             'description' => 'nullable|string',
